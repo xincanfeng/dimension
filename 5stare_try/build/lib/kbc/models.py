@@ -104,10 +104,22 @@ class FiveStarE(KBCModel):
         re_relation_a, im_relation_a, re_relation_b, im_relation_b, re_relation_c, im_relation_c, re_relation_d, im_relation_d = rel[:, :self.rank], rel[:, self.rank:2*self.rank], rel[
             :, 2*self.rank:3*self.rank], rel[:, 3*self.rank:4*self.rank], rel[:, 4*self.rank:5*self.rank], rel[:, 5*self.rank:6*self.rank], rel[:, 6*self.rank:7*self.rank], rel[:, 7*self.rank:]
 
-        # feng-s: hermitian
+        # feng-s: semi-hermitian: c = Conjugate(b)
         re_relation_c = re_relation_b
         im_relation_c = - im_relation_b
+        # feng-i: hermitian: a, d in R
+        im_relation_a = 0
+        im_relation_d = 0
         # feng-e: hermitian
+        # feng-test: c, d in R
+        im_relation_c = 0
+        im_relation_b = 0
+        # feng-test: a, b, c, d = 1
+        re_relation_a = 1
+        re_relation_b = 1
+        re_relation_c = 1
+        re_relation_d = 1
+        # feng-test: a, b, c, d = 1
 
         re_tail, im_tail = rhs[:, :self.rank], rhs[:, self.rank:2*self.rank]
 
@@ -120,8 +132,12 @@ class FiveStarE(KBCModel):
         im_score_top = im_score_a + im_relation_b
 
         # ch
-        re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # feng-s: ch --> Conjugate(b)*h
+        re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+        # feng-e: ch --> Conjugate(b)*h
 
         # ch + d
         re_score_dn = re_score_c + re_relation_d
@@ -151,10 +167,22 @@ class FiveStarE(KBCModel):
         re_relation_a, im_relation_a, re_relation_b, im_relation_b, re_relation_c, im_relation_c, re_relation_d, im_relation_d = rel[:, :self.rank], rel[:, self.rank:2*self.rank], rel[
             :, 2*self.rank:3*self.rank], rel[:, 3*self.rank:4*self.rank], rel[:, 4*self.rank:5*self.rank], rel[:, 5*self.rank:6*self.rank], rel[:, 6*self.rank:7*self.rank], rel[:, 7*self.rank:]
 
-        # feng-s: hermitian
+        # feng-s: semi-hermitian: c = Conjugate(b)
         re_relation_c = re_relation_b
         im_relation_c = - im_relation_b
+        # feng-i: hermitian: a, d in R
+        im_relation_a = 0
+        im_relation_d = 0
         # feng-e: hermitian
+        # feng-test: c, d in R
+        im_relation_c = 0
+        im_relation_b = 0
+        # feng-test: a, b, c, d = 1
+        re_relation_a = 1
+        re_relation_b = 1
+        re_relation_c = 1
+        re_relation_d = 1
+        # feng-test: a, b, c, d = 1
 
         re_tail, im_tail = rhs[:, :self.rank], rhs[:, self.rank:2*self.rank]
 
@@ -167,8 +195,12 @@ class FiveStarE(KBCModel):
         im_score_top = im_score_a + im_relation_b
 
         # ch
-        re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # feng-s: ch --> Conjugate(b)*h
+        re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+        # feng-e: ch --> Conjugate(b)*h
 
         # ch + d
         re_score_dn = re_score_c + re_relation_d
@@ -209,10 +241,22 @@ class FiveStarE(KBCModel):
         re_relation_a, im_relation_a, re_relation_b, im_relation_b, re_relation_c, im_relation_c, re_relation_d, im_relation_d = rel[:, :self.rank], rel[:, self.rank:2*self.rank], rel[
             :, 2*self.rank:3*self.rank], rel[:, 3*self.rank:4*self.rank], rel[:, 4*self.rank:5*self.rank], rel[:, 5*self.rank:6*self.rank], rel[:, 6*self.rank:7*self.rank], rel[:, 7*self.rank:]
 
-        # feng-s: hermitian
+        # feng-s: semi-hermitian: c = Conjugate(b)
         re_relation_c = re_relation_b
         im_relation_c = - im_relation_b
+        # feng-i: hermitian: a, d in R
+        im_relation_a = 0
+        im_relation_d = 0
         # feng-e: hermitian
+        # feng-test: c, d in R
+        im_relation_c = 0
+        im_relation_b = 0
+        # feng-test: a, b, c, d = 1
+        re_relation_a = 1
+        re_relation_b = 1
+        re_relation_c = 1
+        re_relation_d = 1
+        # feng-test: a, b, c, d = 1
 
         # ah
         re_score_a = re_head * re_relation_a - im_head * im_relation_a
@@ -223,8 +267,12 @@ class FiveStarE(KBCModel):
         im_score_top = im_score_a + im_relation_b
 
         # ch
-        re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # feng-s: ch --> Conjugate(b)*h
+        re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+        # feng-e: ch --> Conjugate(b)*h
 
         # ch + d
         re_score_dn = re_score_c + re_relation_d
