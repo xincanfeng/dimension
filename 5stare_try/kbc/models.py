@@ -114,12 +114,7 @@ class FiveStarE(KBCModel):
         # feng-test: c, d in R
         im_relation_c = 0
         im_relation_b = 0
-        # feng-test: a, b, c, d = 1
-        re_relation_a = 1
-        re_relation_b = 1
-        re_relation_c = 1
-        re_relation_d = 1
-        # feng-test: a, b, c, d = 1
+        # feng-test: c, d in R
 
         re_tail, im_tail = rhs[:, :self.rank], rhs[:, self.rank:2*self.rank]
 
