@@ -104,41 +104,77 @@ class FiveStarE(KBCModel):
         re_relation_a, im_relation_a, re_relation_b, im_relation_b, re_relation_c, im_relation_c, re_relation_d, im_relation_d = rel[:, :self.rank], rel[:, self.rank:2*self.rank], rel[
             :, 2*self.rank:3*self.rank], rel[:, 3*self.rank:4*self.rank], rel[:, 4*self.rank:5*self.rank], rel[:, 5*self.rank:6*self.rank], rel[:, 6*self.rank:7*self.rank], rel[:, 7*self.rank:]
 
-        # feng-s: semi-hermitian: c = Conjugate(b)
-        re_relation_c = re_relation_b
-        im_relation_c = - im_relation_b
-        # feng-i: hermitian: a, d in R
-        im_relation_a = 0
-        im_relation_d = 0
-        # feng-e: hermitian
-        # feng-test: c, d in R
-        im_relation_c = 0
-        im_relation_b = 0
-        # feng-test: c, d in R
-
         re_tail, im_tail = rhs[:, :self.rank], rhs[:, self.rank:2*self.rank]
 
+        '''
+        original calculation:
+        a, b, c, d in C
+        '''
+        # # ah
+        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
+
+        # # ch
+        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c + im_relation_d
+
+        '''
+        semi-hermitian: 
+        c = Conjugate(b)
+        thus,
+        re_relation_c = re_relation_b
+        im_relation_c = -im_relation_b
+        '''
+        # # ah
+        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
+
+        # # ch
+        # re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        # im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c + im_relation_d
+
+        '''
+        hermitian: 
+        c = Conjugate(b), and a, d in R
+        thus,
+        re_relation_c = re_relation_b
+        im_relation_c = -im_relation_b
+        im_relation_a = 0
+        im_relation_d = 0
+        '''
         # ah
-        re_score_a = re_head * re_relation_a - im_head * im_relation_a
-        im_score_a = re_head * im_relation_a + im_head * re_relation_a
+        re_score_a = re_head * re_relation_a
+        im_score_a = im_head * re_relation_a
 
         # ah + b
         re_score_top = re_score_a + re_relation_b
         im_score_top = im_score_a + im_relation_b
 
         # ch
-        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
-        # feng-s: ch --> Conjugate(b)*h
         re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
         im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
-        # feng-e: ch --> Conjugate(b)*h
 
         # ch + d
         re_score_dn = re_score_c + re_relation_d
-        im_score_dn = im_score_c + im_relation_d
+        im_score_dn = im_score_c
 
-        # (ah + b)Conj(ch+d)
+        # (ah + b)(ch + d)^-1
         dn_re = torch.sqrt(re_score_dn * re_score_dn +
                            im_score_dn * im_score_dn)
         up_re = torch.div(re_score_top * re_score_dn +
@@ -162,46 +198,77 @@ class FiveStarE(KBCModel):
         re_relation_a, im_relation_a, re_relation_b, im_relation_b, re_relation_c, im_relation_c, re_relation_d, im_relation_d = rel[:, :self.rank], rel[:, self.rank:2*self.rank], rel[
             :, 2*self.rank:3*self.rank], rel[:, 3*self.rank:4*self.rank], rel[:, 4*self.rank:5*self.rank], rel[:, 5*self.rank:6*self.rank], rel[:, 6*self.rank:7*self.rank], rel[:, 7*self.rank:]
 
-        # feng-s: semi-hermitian: c = Conjugate(b)
-        re_relation_c = re_relation_b
-        im_relation_c = - im_relation_b
-        # feng-i: hermitian: a, d in R
-        im_relation_a = 0
-        im_relation_d = 0
-        # feng-e: hermitian
-        # feng-test: c, d in R
-        im_relation_c = 0
-        im_relation_b = 0
-        # feng-test: a, b, c, d = 1
-        re_relation_a = 1
-        re_relation_b = 1
-        re_relation_c = 1
-        re_relation_d = 1
-        # feng-test: a, b, c, d = 1
-
         re_tail, im_tail = rhs[:, :self.rank], rhs[:, self.rank:2*self.rank]
 
+        '''
+        original calculation:
+        a, b, c, d in C
+        '''
+        # # ah
+        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
+
+        # # ch
+        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c + im_relation_d
+
+        '''
+        semi-hermitian: 
+        c = Conjugate(b)
+        thus,
+        re_relation_c = re_relation_b
+        im_relation_c = -im_relation_b
+        '''
+        # # ah
+        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
+
+        # # ch
+        # re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        # im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c + im_relation_d
+
+        '''
+        hermitian: 
+        c = Conjugate(b), and a, d in R
+        thus,
+        re_relation_c = re_relation_b
+        im_relation_c = -im_relation_b
+        im_relation_a = 0
+        im_relation_d = 0
+        '''
         # ah
-        re_score_a = re_head * re_relation_a - im_head * im_relation_a
-        im_score_a = re_head * im_relation_a + im_head * re_relation_a
+        re_score_a = re_head * re_relation_a
+        im_score_a = im_head * re_relation_a
 
         # ah + b
         re_score_top = re_score_a + re_relation_b
         im_score_top = im_score_a + im_relation_b
 
         # ch
-        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
-        # feng-s: ch --> Conjugate(b)*h
         re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
         im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
-        # feng-e: ch --> Conjugate(b)*h
 
         # ch + d
         re_score_dn = re_score_c + re_relation_d
-        im_score_dn = im_score_c + im_relation_d
+        im_score_dn = im_score_c
 
-        # (ah + b)(ch+d)^-1
+        # (ah + b)(ch + d)^-1
         dn_re = torch.sqrt(re_score_dn * re_score_dn +
                            im_score_dn * im_score_dn)
         up_re = torch.div(re_score_top * re_score_dn +
@@ -212,13 +279,41 @@ class FiveStarE(KBCModel):
         to_score = self.embeddings[0].weight
         to_score = to_score[:, :self.rank], to_score[:, self.rank:2*self.rank]
 
+        '''
+        original calculation:
+        '''
+        # return (
+        #     (up_re) @ to_score[0].transpose(0, 1) +
+        #     (up_im) @ to_score[1].transpose(0, 1)
+        # ), (
+        #     torch.sqrt(re_head ** 2 + im_head ** 2),
+        #     torch.sqrt(re_relation_a ** 2 + im_relation_a ** 2 + re_relation_c ** 2 + im_relation_c **
+        #            2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2 + im_relation_d ** 2),
+        #     torch.sqrt(re_tail ** 2 + im_tail ** 2)
+        # )
+
+        '''
+        semi-hermitian:
+        '''
+        # return (
+        #     (up_re) @ to_score[0].transpose(0, 1) +
+        #     (up_im) @ to_score[1].transpose(0, 1)
+        # ), (
+        #     torch.sqrt(re_head ** 2 + im_head ** 2),
+        #     torch.sqrt(re_relation_a ** 2 + im_relation_a ** 2 + re_relation_b ** 2 + (-im_relation_b) ** 2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2 + im_relation_d ** 2),
+        #     torch.sqrt(re_tail ** 2 + im_tail ** 2)
+        # )
+
+        '''
+        hermitian:
+        '''
         return (
             (up_re) @ to_score[0].transpose(0, 1) +
             (up_im) @ to_score[1].transpose(0, 1)
         ), (
             torch.sqrt(re_head ** 2 + im_head ** 2),
-            torch.sqrt(re_relation_a ** 2 + im_relation_a ** 2 + re_relation_c ** 2 + im_relation_c **
-                       2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2 + im_relation_d ** 2),
+            torch.sqrt(re_relation_a ** 2 + re_relation_b ** 2 + (-im_relation_b)
+                       ** 2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2),
             torch.sqrt(re_tail ** 2 + im_tail ** 2)
         )
 
@@ -236,44 +331,75 @@ class FiveStarE(KBCModel):
         re_relation_a, im_relation_a, re_relation_b, im_relation_b, re_relation_c, im_relation_c, re_relation_d, im_relation_d = rel[:, :self.rank], rel[:, self.rank:2*self.rank], rel[
             :, 2*self.rank:3*self.rank], rel[:, 3*self.rank:4*self.rank], rel[:, 4*self.rank:5*self.rank], rel[:, 5*self.rank:6*self.rank], rel[:, 6*self.rank:7*self.rank], rel[:, 7*self.rank:]
 
-        # feng-s: semi-hermitian: c = Conjugate(b)
+        '''
+        original calculation:
+        a, b, c, d in C
+        '''
+        # # ah
+        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
+
+        # # ch
+        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c + im_relation_d
+
+        '''
+        semi-hermitian: 
+        c = Conjugate(b)
+        thus,
         re_relation_c = re_relation_b
-        im_relation_c = - im_relation_b
-        # feng-i: hermitian: a, d in R
+        im_relation_c = -im_relation_b
+        '''
+        # # ah
+        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
+
+        # # ch
+        # re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        # im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c + im_relation_d
+
+        '''
+        hermitian: 
+        c = Conjugate(b), and a, d in R
+        thus,
+        re_relation_c = re_relation_b
+        im_relation_c = -im_relation_b
         im_relation_a = 0
         im_relation_d = 0
-        # feng-e: hermitian
-        # feng-test: c, d in R
-        im_relation_c = 0
-        im_relation_b = 0
-        # feng-test: a, b, c, d = 1
-        re_relation_a = 1
-        re_relation_b = 1
-        re_relation_c = 1
-        re_relation_d = 1
-        # feng-test: a, b, c, d = 1
-
+        '''
         # ah
-        re_score_a = re_head * re_relation_a - im_head * im_relation_a
-        im_score_a = re_head * im_relation_a + im_head * re_relation_a
+        re_score_a = re_head * re_relation_a
+        im_score_a = im_head * re_relation_a
 
         # ah + b
         re_score_top = re_score_a + re_relation_b
         im_score_top = im_score_a + im_relation_b
 
         # ch
-        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
-        # feng-s: ch --> Conjugate(b)*h
         re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
         im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
-        # feng-e: ch --> Conjugate(b)*h
 
         # ch + d
         re_score_dn = re_score_c + re_relation_d
-        im_score_dn = im_score_c + im_relation_d
+        im_score_dn = im_score_c
 
-        # (ah + b)(ch+d)^-1
+        # (ah + b)(ch + d)^-1
         dn_re = torch.sqrt(re_score_dn * re_score_dn +
                            im_score_dn * im_score_dn)
         up_re = torch.div(re_score_top * re_score_dn +
