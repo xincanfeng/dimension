@@ -110,21 +110,21 @@ class FiveStarE(KBCModel):
         original calculation:
         a, b, c, d in C
         '''
-        # # ah
-        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
-        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+        # ah
+        re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        im_score_a = re_head * im_relation_a + im_head * re_relation_a
 
-        # # ah + b
-        # re_score_top = re_score_a + re_relation_b
-        # im_score_top = im_score_a + im_relation_b
+        # ah + b
+        re_score_top = re_score_a + re_relation_b
+        im_score_top = im_score_a + im_relation_b
 
-        # # ch
-        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # ch
+        re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        im_score_c = re_head * im_relation_c + im_head * re_relation_c
 
-        # # ch + d
-        # re_score_dn = re_score_c + re_relation_d
-        # im_score_dn = im_score_c + im_relation_d
+        # ch + d
+        re_score_dn = re_score_c + re_relation_d
+        im_score_dn = im_score_c + im_relation_d
 
         '''
         semi-hermitian: 
@@ -158,21 +158,21 @@ class FiveStarE(KBCModel):
         im_relation_a = 0
         im_relation_d = 0
         '''
-        # ah
-        re_score_a = re_head * re_relation_a
-        im_score_a = im_head * re_relation_a
+        # # ah
+        # re_score_a = re_head * re_relation_a
+        # im_score_a = im_head * re_relation_a
 
-        # ah + b
-        re_score_top = re_score_a + re_relation_b
-        im_score_top = im_score_a + im_relation_b
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
 
-        # ch
-        re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
-        im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+        # # ch
+        # re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        # im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
 
-        # ch + d
-        re_score_dn = re_score_c + re_relation_d
-        im_score_dn = im_score_c
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c
 
         # (ah + b)(ch + d)^-1
         dn_re = torch.sqrt(re_score_dn * re_score_dn +
@@ -204,21 +204,21 @@ class FiveStarE(KBCModel):
         original calculation:
         a, b, c, d in C
         '''
-        # # ah
-        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
-        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+        # ah
+        re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        im_score_a = re_head * im_relation_a + im_head * re_relation_a
 
-        # # ah + b
-        # re_score_top = re_score_a + re_relation_b
-        # im_score_top = im_score_a + im_relation_b
+        # ah + b
+        re_score_top = re_score_a + re_relation_b
+        im_score_top = im_score_a + im_relation_b
 
-        # # ch
-        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # ch
+        re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        im_score_c = re_head * im_relation_c + im_head * re_relation_c
 
-        # # ch + d
-        # re_score_dn = re_score_c + re_relation_d
-        # im_score_dn = im_score_c + im_relation_d
+        # ch + d
+        re_score_dn = re_score_c + re_relation_d
+        im_score_dn = im_score_c + im_relation_d
 
         '''
         semi-hermitian: 
@@ -252,21 +252,21 @@ class FiveStarE(KBCModel):
         im_relation_a = 0
         im_relation_d = 0
         '''
-        # ah
-        re_score_a = re_head * re_relation_a
-        im_score_a = im_head * re_relation_a
+        # # ah
+        # re_score_a = re_head * re_relation_a
+        # im_score_a = im_head * re_relation_a
 
-        # ah + b
-        re_score_top = re_score_a + re_relation_b
-        im_score_top = im_score_a + im_relation_b
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
 
-        # ch
-        re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
-        im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+        # # ch
+        # re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        # im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
 
-        # ch + d
-        re_score_dn = re_score_c + re_relation_d
-        im_score_dn = im_score_c
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c
 
         # (ah + b)(ch + d)^-1
         dn_re = torch.sqrt(re_score_dn * re_score_dn +
@@ -282,15 +282,15 @@ class FiveStarE(KBCModel):
         '''
         original calculation:
         '''
-        # return (
-        #     (up_re) @ to_score[0].transpose(0, 1) +
-        #     (up_im) @ to_score[1].transpose(0, 1)
-        # ), (
-        #     torch.sqrt(re_head ** 2 + im_head ** 2),
-        #     torch.sqrt(re_relation_a ** 2 + im_relation_a ** 2 + re_relation_c ** 2 + im_relation_c **
-        #            2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2 + im_relation_d ** 2),
-        #     torch.sqrt(re_tail ** 2 + im_tail ** 2)
-        # )
+        return (
+            (up_re) @ to_score[0].transpose(0, 1) +
+            (up_im) @ to_score[1].transpose(0, 1)
+        ), (
+            torch.sqrt(re_head ** 2 + im_head ** 2),
+            torch.sqrt(re_relation_a ** 2 + im_relation_a ** 2 + re_relation_c ** 2 + im_relation_c **
+                       2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2 + im_relation_d ** 2),
+            torch.sqrt(re_tail ** 2 + im_tail ** 2)
+        )
 
         '''
         semi-hermitian:
@@ -307,15 +307,15 @@ class FiveStarE(KBCModel):
         '''
         hermitian:
         '''
-        return (
-            (up_re) @ to_score[0].transpose(0, 1) +
-            (up_im) @ to_score[1].transpose(0, 1)
-        ), (
-            torch.sqrt(re_head ** 2 + im_head ** 2),
-            torch.sqrt(re_relation_a ** 2 + re_relation_b ** 2 + (-im_relation_b)
-                       ** 2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2),
-            torch.sqrt(re_tail ** 2 + im_tail ** 2)
-        )
+        # return (
+        #     (up_re) @ to_score[0].transpose(0, 1) +
+        #     (up_im) @ to_score[1].transpose(0, 1)
+        # ), (
+        #     torch.sqrt(re_head ** 2 + im_head ** 2),
+        #     torch.sqrt(re_relation_a ** 2 + re_relation_b ** 2 + (-im_relation_b)
+        #                ** 2 + re_relation_b ** 2 + im_relation_b ** 2 + re_relation_d ** 2),
+        #     torch.sqrt(re_tail ** 2 + im_tail ** 2)
+        # )
 
     def get_rhs(self, chunk_begin: int, chunk_size: int):
         return self.embeddings[0].weight.data[
@@ -335,21 +335,21 @@ class FiveStarE(KBCModel):
         original calculation:
         a, b, c, d in C
         '''
-        # # ah
-        # re_score_a = re_head * re_relation_a - im_head * im_relation_a
-        # im_score_a = re_head * im_relation_a + im_head * re_relation_a
+        # ah
+        re_score_a = re_head * re_relation_a - im_head * im_relation_a
+        im_score_a = re_head * im_relation_a + im_head * re_relation_a
 
-        # # ah + b
-        # re_score_top = re_score_a + re_relation_b
-        # im_score_top = im_score_a + im_relation_b
+        # ah + b
+        re_score_top = re_score_a + re_relation_b
+        im_score_top = im_score_a + im_relation_b
 
-        # # ch
-        # re_score_c = re_head * re_relation_c - im_head * im_relation_c
-        # im_score_c = re_head * im_relation_c + im_head * re_relation_c
+        # ch
+        re_score_c = re_head * re_relation_c - im_head * im_relation_c
+        im_score_c = re_head * im_relation_c + im_head * re_relation_c
 
-        # # ch + d
-        # re_score_dn = re_score_c + re_relation_d
-        # im_score_dn = im_score_c + im_relation_d
+        # ch + d
+        re_score_dn = re_score_c + re_relation_d
+        im_score_dn = im_score_c + im_relation_d
 
         '''
         semi-hermitian: 
@@ -383,21 +383,21 @@ class FiveStarE(KBCModel):
         im_relation_a = 0
         im_relation_d = 0
         '''
-        # ah
-        re_score_a = re_head * re_relation_a
-        im_score_a = im_head * re_relation_a
+        # # ah
+        # re_score_a = re_head * re_relation_a
+        # im_score_a = im_head * re_relation_a
 
-        # ah + b
-        re_score_top = re_score_a + re_relation_b
-        im_score_top = im_score_a + im_relation_b
+        # # ah + b
+        # re_score_top = re_score_a + re_relation_b
+        # im_score_top = im_score_a + im_relation_b
 
-        # ch
-        re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
-        im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
+        # # ch
+        # re_score_c = re_head * re_relation_b - im_head * (-im_relation_b)
+        # im_score_c = re_head * (-im_relation_b) + im_head * re_relation_b
 
-        # ch + d
-        re_score_dn = re_score_c + re_relation_d
-        im_score_dn = im_score_c
+        # # ch + d
+        # re_score_dn = re_score_c + re_relation_d
+        # im_score_dn = im_score_c
 
         # (ah + b)(ch + d)^-1
         dn_re = torch.sqrt(re_score_dn * re_score_dn +

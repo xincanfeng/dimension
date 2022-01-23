@@ -12,7 +12,7 @@ from typing import Dict, Tuple, List
 
 import numpy as np
 import torch
-from kbc.models import KBCModel
+from KBCModel import KBCModel
 
 
 DATA_PATH = Path(pkg_resources.resource_filename('kbc', 'data/'))

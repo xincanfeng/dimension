@@ -1,10 +1,15 @@
 LICENSE
 README.md
 setup.py
+kbc/CP.py
+kbc/ComplEx.py
+kbc/FiveStarE.py
+kbc/Hermitian_FiveStarE.py
+kbc/KBCModel.py
+kbc/Semi_Hermitian_FiveStarE.py
 kbc/__init__.py
 kbc/datasets.py
 kbc/learn.py
-kbc/models.py
 kbc/optimizers.py
 kbc/process_datasets.py
 kbc/regularizers.py

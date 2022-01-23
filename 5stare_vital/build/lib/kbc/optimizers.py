@@ -10,7 +10,7 @@ import torch
 from torch import nn
 from torch import optim
 
-from kbc.models import KBCModel
+from KBCModel import KBCModel
 from kbc.regularizers import Regularizer
 
 

@@ -12,9 +12,14 @@ import torch
 from torch import optim
 
 from kbc.datasets import Dataset
-from kbc.models import FiveStarE, CP, ComplEx
 from kbc.regularizers import F2, N3
 from kbc.optimizers import KBCOptimizer
+
+from kbc.FiveStarE import FiveStarE
+from kbc.CP import CP
+from kbc.ComplEx import ComplEx
+from kbc.Hermitian_FiveStarE import Hermitian_FiveStarE
+from kbc.Semi_Hermitian_FiveStarE import Semi_Hermitian_FiveStarE
 
 
 big_datasets = ['FB15K', 'WN', 'WN18RR', 'FB237', 'YAGO3-10']
@@ -29,7 +34,7 @@ parser.add_argument(
     help="Dataset in {}".format(datasets)
 )
 
-models = ['FiveStarE','CP', 'ComplEx']
+models = ['FiveStarE', 'CP', 'ComplEx']
 parser.add_argument(
     '--model', choices=models,
     help="Model in {}".format(models)
@@ -93,6 +98,8 @@ model = {
     'FiveStarE': lambda: FiveStarE(dataset.get_shape(), args.rank, args.init),
     'CP': lambda: CP(dataset.get_shape(), args.rank, args.init),
     'ComplEx': lambda: ComplEx(dataset.get_shape(), args.rank, args.init),
+    'Semi_Hermitian_FiveStarE': lambda: Semi_Hermitian_FiveStarE(dataset.get_shape(), args.rank, args.init),
+    'Hermitian_FiveStarE': lambda: Hermitian_FiveStarE(dataset.get_shape(), args.rank, args.init),
 }[args.model]()
 
 regularizer = {
@@ -131,7 +138,8 @@ for e in range(args.max_epochs):
 
     if (e + 1) % args.valid == 0:
         valid, test, train = [
-            avg_both(*dataset.eval(model, split, -1 if split != 'train' else 50000))
+            avg_both(*dataset.eval(model, split, -
+                     1 if split != 'train' else 50000))
             for split in ['valid', 'test', 'train']
         ]
 
