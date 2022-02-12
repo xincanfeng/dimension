@@ -10,14 +10,14 @@ Baseline models:
 - [ ] ComplEx
 
 Methods:
-- [x] constrain the parameters with **hermitian**, **semi-hermitian**.
-- [ ] constrain the head with **lnx**
+- [x] constrain the parameters with **"hermitian"**, **"semi-hermitian"**.
+- [ ] constrain the head with **"lnx"**
 
 
 ## Implementation of the project
 ### Code path
-:blue_heart: Please help with *dim5stare/*,  
-:see_no_evil: Please ignore *history/*, those are just history codes saved in case.
+:blue_heart: Please help with *"dim5stare/"*,  
+:see_no_evil: Please ignore *"history/"*, those are just history codes saved in case.
 
 ### Prepare virtual environment
 Setup virtual environment, and install required basic packages:
