@@ -6,7 +6,7 @@ I tried to modify several baseline models using my methods. Specifically, the me
 1. constrain the parameters with **hermitian**, **semi-hermitian**.
 
 ## Implementation of the project
-###### Code path
+### Code path
 Please help with **dim5stare/**,  
 Please ignore **history/**, those are just history codes saved in case.
 
