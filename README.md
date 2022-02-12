@@ -10,7 +10,7 @@ I tried to modify several baseline models using my methods. Specifically, the me
 Please help with **dim5stare/**,  
 Please ignore **history/**, those are just history codes saved in case.
 
-###### Prepare virtual environment
+### Prepare virtual environment
 Setup virtual environment, and install required basic packages:
 ```
 python -m venv .venv_kbc
@@ -23,7 +23,7 @@ Install the kbc package into this environment. Please note that, you have to run
 python setup.py install
 ```
 
-###### Prepare datasets
+### Prepare datasets
 Download datasets:
 ```
 cd kbc/scripts
@@ -36,13 +36,13 @@ Once the datasets are downloaded, add them to the package data folder by running
 python kbc/process_datasets.py
 ```
 
-###### Running the code
+### Running the code
 ```
 python kbc/learn.py --dataset datasetName --model FiveStarE --rank dimension --optimizer
 Adagrad --learning_rate lr --batch_size batchSize --regularizer N3 --reg regularizerValue
  --max_epochs EpochNumber --valid 50
 ```
 
-###### License
+### License
 kbc is CC-BY-NC licensed, as found in the LICENSE file
 
