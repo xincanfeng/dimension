@@ -1,9 +1,20 @@
 # DimStarE
 This is the code for implementation of "Constrain on Relational Dimension for Knowledge Graph Embeddings"
 
-## My methods
-I tried to modify several baseline models using my methods. Specifically, the methods are:
-1. constrain the parameters with **hermitian**, **semi-hermitian**.
+
+## Our methods
+We aim to modify several Knowledge Graph Embedding (KGE) baseline models using our proposed Constraint Methods on Dimensions.
+
+Specifically, 
+
+Baseline models:
+- [x] 5StarE
+- [ ] ComplEx
+
+Methods:
+- [x] constrain the parameters with **hermitian**, **semi-hermitian**.
+- [ ] constrain the head with \lnx
+
 
 ## Implementation of the project
 ### Code path
