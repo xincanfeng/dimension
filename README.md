@@ -5,21 +5,19 @@ This is the code for implementation of "Constrain on Relational Dimension for Kn
 ## Our methods
 We aim to modify several Knowledge Graph Embedding (KGE) baseline models using our proposed Constraint Methods on Dimensions.
 
-Specifically, 
-
 Baseline models:
 - [x] 5StarE
 - [ ] ComplEx
 
 Methods:
 - [x] constrain the parameters with **hermitian**, **semi-hermitian**.
-- [ ] constrain the head with \lnx
+- [ ] constrain the head with **lnx**
 
 
 ## Implementation of the project
 ### Code path
-Please help with **dim5stare/**,  
-Please ignore **history/**, those are just history codes saved in case.
+:blue_heart:Please help with ~dim5stare/~,  
+:see_no_evil: Please ignore history/**, those are just history codes saved in case.
 
 ### Prepare virtual environment
 Setup virtual environment, and install required basic packages:
