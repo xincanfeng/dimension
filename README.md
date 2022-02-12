@@ -16,8 +16,8 @@ Methods:
 
 ## Implementation of the project
 ### Code path
-:blue_heart: Please help with *"dim5stare/"*,  
-:see_no_evil: Please ignore *"history/"*, those are just history codes saved in case.
+:blue_heart: Please help with *"DimStarE/\*"*,  
+:see_no_evil: Please ignore *"history/\*"*, those are just history codes saved in case.
 
 ### Prepare virtual environment
 Setup virtual environment, and install required basic packages:
