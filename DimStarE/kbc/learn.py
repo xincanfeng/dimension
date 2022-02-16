@@ -18,7 +18,7 @@ from kbc.datasets import Dataset
 from kbc.regularizers import F2, N3
 from kbc.optimizers import KBCOptimizer
 
-# If you create a new model, import it here!!
+# If you created a new model, import it here!!
 from kbc.FiveStarE import FiveStarE
 from kbc.FiveStarE_hermitian import FiveStarE_hermitian
 from kbc.FiveStarE_semi_hermitian import FiveStarE_semi_hermitian
@@ -39,7 +39,7 @@ parser.add_argument(
 )
 
 # set choices for running the project
-# If you create a new model, add it here!! 
+# If you created a new model, add it here!! 
 models = ['FiveStarE', 'CP', 'ComplEx',
           'FiveStarE_hermitian', 'FiveStarE_semi_hermitian']
 parser.add_argument(
@@ -110,7 +110,7 @@ dataset = Dataset(args.dataset)
 examples = torch.from_numpy(dataset.get_train().astype('int64'))
 
 print(dataset.get_shape())
-# If you create a new model, add it here!! 
+# If you created a new model, add it here!! 
 model = {
     'FiveStarE': lambda: FiveStarE(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_semi_hermitian': lambda: FiveStarE_semi_hermitian(dataset.get_shape(), args.rank, args.init),

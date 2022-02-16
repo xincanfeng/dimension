@@ -1,4 +1,4 @@
-from KBCModel import KBCModel
+from kbc.KBCModel import KBCModel
 from typing import Tuple
 import torch
 from torch import nn
@@ -14,7 +14,7 @@ class ComplEx(KBCModel):
         self.rank = rank
 
         self.embeddings = nn.ModuleList([
-            nn.Embedding(s, 2 * rank, sparse=True)
+            nn.Embedding(s, 2*rank, sparse=True)
             for s in sizes[:2]
         ])
         self.embeddings[0].weight.data *= init_size
@@ -57,7 +57,7 @@ class ComplEx(KBCModel):
 
     def get_rhs(self, chunk_begin: int, chunk_size: int):
         return self.embeddings[0].weight.data[
-            chunk_begin:chunk_begin + chunk_size
+            chunk_begin:chunk_begin+chunk_size
         ].transpose(0, 1)
 
     def get_queries(self, queries: torch.Tensor):

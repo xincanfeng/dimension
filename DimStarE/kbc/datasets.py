@@ -3,7 +3,7 @@
 #
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
-#
+
 
 from pathlib import Path
 import pkg_resources
@@ -12,7 +12,7 @@ from typing import Dict, Tuple, List
 
 import numpy as np
 import torch
-from KBCModel import KBCModel
+from kbc.KBCModel import KBCModel
 
 
 DATA_PATH = Path(pkg_resources.resource_filename('kbc', 'data/'))

@@ -3,7 +3,8 @@
 #
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
-#
+
+
 import pkg_resources
 import os
 import errno
@@ -46,7 +47,7 @@ def prepare_dataset(path, name):
     n_relations = len(relations)
     n_entities = len(entities)
     os.makedirs(os.path.join(DATA_PATH, name))
-    # write ent to id / rel to id
+    # write entity to id / relation to id
     for (dic, f) in zip([entities_to_id, relations_to_id], ['ent_id', 'rel_id']):
         ff = open(os.path.join(DATA_PATH, name, f), 'w+')
         for (x, i) in dic.items():

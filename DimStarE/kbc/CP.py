@@ -1,4 +1,4 @@
-from KBCModel import KBCModel
+from kbc.KBCModel import KBCModel
 from typing import Tuple
 import torch
 from torch import nn
@@ -25,7 +25,6 @@ class CP(KBCModel):
         lhs = self.lhs(x[:, 0])
         rel = self.rel(x[:, 1])
         rhs = self.rhs(x[:, 2])
-
         return torch.sum(lhs * rel * rhs, 1, keepdim=True)
 
     def forward(self, x):
