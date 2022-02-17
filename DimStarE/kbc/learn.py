@@ -6,7 +6,7 @@
 #
 
 # import sys
-# sys.path.append("/home/cl/xincan-f/embedding/dimension/dim5stare")
+# sys.path.append("/home/cl/xincan-f/embedding/dimension/DimStarE")
 
 import argparse
 from typing import Dict

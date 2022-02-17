@@ -43,10 +43,10 @@ class FiveStarE_semi_hermitian(KBCModel):
     def forward(self, x):
         return transformation(embeddings=self.embeddings, x=x, flag="forward", rank=self.rank)
 
-    # get tail embedding
+    # get tails embeddings
     def get_rhs(self, chunk_begin: int, chunk_size: int):
         return self.embeddings[0].weight.data[
-            chunk_begin:chunk_begin + chunk_size, :2*self.rank
+            chunk_begin:chunk_begin+chunk_size, :2*self.rank
         ].transpose(0, 1)
 
     # get queries embeddings

@@ -9,6 +9,7 @@ from torch import nn
 a, b, c, d in C
 '''
 
+
 class FiveStarE(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
@@ -18,11 +19,14 @@ class FiveStarE(KBCModel):
         self.sizes = sizes
         self.rank = rank
 
+        # assign two embedding parameters matrices from torch (at each batch)
         self.embeddings = nn.ModuleList([
             nn.Embedding(s, 8*rank, sparse=True)
             for s in sizes[:2]
         ])
+        # the 1st embedding matrix is for head/tail entities
         self.embeddings[0].weight.data *= init_size
+        # the 2nd embedding matrix is for relation entities
         self.embeddings[1].weight.data *= init_size
 
     def score(self, x):
@@ -31,10 +35,10 @@ class FiveStarE(KBCModel):
     def forward(self, x):
         return transformation(embeddings=self.embeddings, x=x, flag="forward", rank=self.rank)
 
-    # get tail embeddings
+    # get tails embeddings
     def get_rhs(self, chunk_begin: int, chunk_size: int):
         return self.embeddings[0].weight.data[
-            chunk_begin:chunk_begin + chunk_size, :2*self.rank
+            chunk_begin:chunk_begin+chunk_size, :2*self.rank
         ].transpose(0, 1)
 
     # get queries embeddings
@@ -47,11 +51,14 @@ def transformation(embeddings, x, flag, rank):
     param flags : ["score", "forward", "get_queries"]
     param rank: dimension number of embedding
     '''
-    # head entity embedding
+    # x[:, 0]: head information
+    # assign embedding parameters to head entity
     lhs = embeddings[0](x[:, 0])
-    # relation embedding
+    # x[:, 1]: relation information
+    # assign embedding parameters to relation
     rel = embeddings[1](x[:, 1])
-    # tail entity embedding
+    # x[:, 2]: tail information
+    # assign embedding parameters to tail entity
     rhs = embeddings[0](x[:, 2])
 
     # the real and imaginary part of head
