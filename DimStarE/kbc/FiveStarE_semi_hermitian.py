@@ -5,7 +5,7 @@ from torch import nn
 
 
 '''
-5*E_semi_hermitian model:
+5*E_semi_hermitian model: (or say 5*E_semi_conjugate model)
 a, b, c, d in C,
 c = conjugate(b)
 i.e.
@@ -57,7 +57,7 @@ class FiveStarE_semi_hermitian(KBCModel):
 def transformation(embeddings, x, flag, rank):
     '''
     param flags : ["score", "forward", "get_queries"]
-    param rank: dimension number of embedding
+    param rank: dimensions number of embedding
     '''
     # x[:, 0]: head information 
     # assign embedding parameters to head entity

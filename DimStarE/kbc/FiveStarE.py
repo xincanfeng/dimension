@@ -49,7 +49,7 @@ class FiveStarE(KBCModel):
 def transformation(embeddings, x, flag, rank):
     '''
     param flags : ["score", "forward", "get_queries"]
-    param rank: dimension number of embedding
+    param rank: dimensions number of embedding
     '''
     # x[:, 0]: head information
     # assign embedding parameters to head entity

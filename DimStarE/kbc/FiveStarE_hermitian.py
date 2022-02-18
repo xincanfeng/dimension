@@ -60,7 +60,7 @@ class FiveStarE_hermitian(KBCModel):
 def transformation(embeddings, x, flag, rank):
     '''
     param flag : ["score", "forward", "get_queries"]
-    param rank: dimension number of embedding
+    param rank: dimensions number of embedding
     '''
     # x[:, 0]: head information 
     # assign embedding parameters to head entity

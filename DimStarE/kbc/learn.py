@@ -20,8 +20,9 @@ from kbc.optimizers import KBCOptimizer
 
 # If you created a new model, import it here!!
 from kbc.FiveStarE import FiveStarE
-from kbc.FiveStarE_hermitian import FiveStarE_hermitian
 from kbc.FiveStarE_semi_hermitian import FiveStarE_semi_hermitian
+from kbc.FiveStarE_hermitian import FiveStarE_hermitian
+from kbc.FiveStarE_all_conjugate import FiveStarE_all_conjugate
 from kbc.CP import CP
 from kbc.ComplEx import ComplEx
 
@@ -41,7 +42,7 @@ parser.add_argument(
 # set choices for running the project
 # If you created a new model, add it here!! 
 models = ['FiveStarE', 'CP', 'ComplEx',
-          'FiveStarE_hermitian', 'FiveStarE_semi_hermitian']
+          'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate']
 parser.add_argument(
     '--model', choices=models,
     help="Model in {}".format(models)
@@ -115,6 +116,7 @@ model = {
     'FiveStarE': lambda: FiveStarE(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_semi_hermitian': lambda: FiveStarE_semi_hermitian(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_hermitian': lambda: FiveStarE_hermitian(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_all_conjugate': lambda: FiveStarE_all_conjugate(dataset.get_shape(), args.rank, args.init),
     'CP': lambda: CP(dataset.get_shape(), args.rank, args.init),
     'ComplEx': lambda: ComplEx(dataset.get_shape(), args.rank, args.init),
 }[args.model]()
