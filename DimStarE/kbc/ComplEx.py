@@ -13,11 +13,14 @@ class ComplEx(KBCModel):
         self.sizes = sizes
         self.rank = rank
 
+        # assign two embedding parameters matrices form torch (at each batch)
         self.embeddings = nn.ModuleList([
             nn.Embedding(s, 2*rank, sparse=True)
             for s in sizes[:2]
         ])
+        # the 1st embedding matrix is for head/tail entities
         self.embeddings[0].weight.data *= init_size
+        # the 2nd embedding matrix is for relations
         self.embeddings[1].weight.data *= init_size
 
     def score(self, x):
@@ -70,3 +73,11 @@ class ComplEx(KBCModel):
             lhs[0] * rel[0] - lhs[1] * rel[1],
             lhs[0] * rel[1] + lhs[1] * rel[0]
         ], 1)
+
+
+def transformation():
+    '''
+    flag: ["score", "forward", "get_queries"]
+    rank: 
+    '''
+    

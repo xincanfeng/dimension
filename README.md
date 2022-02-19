@@ -40,10 +40,9 @@ chmod +x download_data.sh
 ./download_data.sh
 ```
 
-Once the datasets are downloaded, add them to the package data folder by running the command below. This will create the files required to compute the filtered metrics:
+Once the datasets are downloaded, add them to the package data folder by running the command below. This will create the required files to compute the filtered metrics:
 ```
-cd ..
-python process_datasets.py
+python kbc/process_datasets.py
 ```
 
 ### Running the code

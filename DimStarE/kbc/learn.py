@@ -110,7 +110,12 @@ args = parser.parse_args()
 dataset = Dataset(args.dataset)
 examples = torch.from_numpy(dataset.get_train().astype('int64'))
 
+# print config
+print(args)
+
+# print number of head entities, number of relations * 2, number of tail entities
 print(dataset.get_shape())
+
 # If you created a new model, add it here!! 
 model = {
     'FiveStarE': lambda: FiveStarE(dataset.get_shape(), args.rank, args.init),
@@ -165,8 +170,11 @@ for e in range(args.max_epochs):
         curve['test'].append(test)
         curve['train'].append(train)
 
+        # print epoch number
+        print("\t epoch number: ", e + 1)
+        # print train and valid results
         print("\t TRAIN: ", train)
-        print("\t VALID : ", valid)
+        print("\t VALID: ", valid)
 
 results = dataset.eval(model, 'test', -1)
-print("\n\nTEST : ", results)
+print("\n\n TEST: ", results)

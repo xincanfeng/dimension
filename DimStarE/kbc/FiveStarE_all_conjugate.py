@@ -37,7 +37,7 @@ class FiveStarE_all_conjugate(KBCModel):
         ])
         # the 1st embedding matrix is for head/tail entities
         self.embeddings[0].weight.data *= init_size
-        # the 2nd embedding matrix is for relation entities
+        # the 2nd embedding matrix is for relations
         self.embeddings[1].weight.data *= init_size
 
     def score(self, x):
@@ -59,8 +59,8 @@ class FiveStarE_all_conjugate(KBCModel):
 
 def transformation(embeddings, x, flag, rank):
     '''
-    param flags : ["score", "forward", "get_queries"]
-    param rank: dimensions number of embedding
+    flag: ["score", "forward", "get_queries"]
+    rank: dimensions number of embedding
     '''
     # x[:, 0]: head information 
     # assign embedding parameters to head entity

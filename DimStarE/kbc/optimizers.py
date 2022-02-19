@@ -32,9 +32,7 @@ class KBCOptimizer(object):
             bar.set_description(f'train loss')
             b_begin = 0
             while b_begin < examples.shape[0]:
-                input_batch = actual_examples[
-                    b_begin:b_begin + self.batch_size
-                ].cuda()
+                input_batch = actual_examples[b_begin:b_begin + self.batch_size].cuda()
 
                 predictions, factors = self.model.forward(input_batch)
                 truth = input_batch[:, 2]
