@@ -1,18 +1,32 @@
+Updated 20-Feb, 2022.
+
 # DimStarE
-This is the code for implementation of "Constrain on Relational Dimension for Knowledge Graph Embeddings"
+This is the code for implementation of "(Feng et al. 2022) Constrain on Relational Dimension for Knowledge Graph Embeddings"
 
 
 ## Our methods
 We aim to modify several Knowledge Graph Embedding (KGE) baseline models using our proposed Constraint Methods on Dimensions.
 
-Baseline models:
+### Methods
+• Constrain the relations with:
+- [x] **"semi_hermitian"**
+- [x] **"hermitian"**
+- [x] **"all_conjugate"**
+
+• Constrain the heads with:
+- [] **"lnx"**
+
+### Baseline models
 - [x] 5StarE
 - [ ] ComplEx
 
-Methods:
-- [x] constrain the parameters with **"hermitian"**, **"semi-hermitian"**.
-- [ ] constrain the head with **"lnx"**
-
+### Datasets
+- [] UMLS
+- [x] FB15K-237
+- [x] WN18RR
+- [x] YAGO3-10
+- [x] FB15K
+- [x] WN18
 
 ## Implementation of the project
 ### Code path

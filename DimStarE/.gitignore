@@ -6,3 +6,4 @@ kbc/lib/bindings.cpp
 dist
 kbc/data
 **/.nfs*
+*.out
