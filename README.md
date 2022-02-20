@@ -14,11 +14,16 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 - [x] **"all_conjugate"**
 
 • Constrain the heads with:
+<<<<<<< HEAD
 - [ ] **"lnx"**
+=======
+- [] **"lnx"**
+>>>>>>> 179bc36ae2ad0f2602557a4a889c11d569f55d48
 
 ### Baseline models
 - [x] 5StarE
 
+<<<<<<< HEAD
 <p align="center">
 <img src="https://github.com/mojtabanayyeri/5-StartE/blob/5-StarE/img/OtherTransfType.png" alt="Transformation of Exsiting KGE Models." width="500"/>
 </p>
@@ -27,6 +32,10 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 
 ### Datasets
 - [ ] UMLS
+=======
+### Datasets
+- [] UMLS
+>>>>>>> 179bc36ae2ad0f2602557a4a889c11d569f55d48
 - [x] FB15K-237
 - [x] WN18RR
 - [x] YAGO3-10
