@@ -1,18 +1,37 @@
+Updated 20-Feb, 2022.
+
 # DimStarE
-This is the code for implementation of "Constrain on Relational Dimension for Knowledge Graph Embeddings"
+This is the code for implementation of "(Feng et al. 2022) Constrain on Relational Dimension for Knowledge Graph Embeddings"
 
 
 ## Our methods
 We aim to modify several Knowledge Graph Embedding (KGE) baseline models using our proposed Constraint Methods on Dimensions.
 
-Baseline models:
+### Methods
+• Constrain the relations with:
+- [x] **"semi_hermitian"**
+- [x] **"hermitian"**
+- [x] **"all_conjugate"**
+
+• Constrain the heads with:
+- [ ] **"lnx"**
+
+### Baseline models
 - [x] 5StarE
+
+<p align="center">
+<img src="https://github.com/mojtabanayyeri/5-StartE/blob/5-StarE/img/OtherTransfType.png" alt="Transformation of Exsiting KGE Models." width="500"/>
+</p>
+
 - [ ] ComplEx
 
-Methods:
-- [x] constrain the parameters with **"hermitian"**, **"semi-hermitian"**.
-- [ ] constrain the head with **"lnx"**
-
+### Datasets
+- [ ] UMLS
+- [x] FB15K-237
+- [x] WN18RR
+- [x] YAGO3-10
+- [x] FB15K
+- [x] WN18
 
 ## Implementation of the project
 ### Code path
@@ -40,7 +59,7 @@ chmod +x download_data.sh
 ./download_data.sh
 ```
 
-Once the datasets are downloaded, add them to the package data folder by running the command below. This will create the files required to compute the filtered metrics:
+Once the datasets are downloaded, add them to the package data folder by running the command below. This will create the required files to compute the filtered metrics:
 ```
 python kbc/process_datasets.py
 ```
