@@ -6,8 +6,5 @@ kbc/lib/bindings.cpp
 dist
 kbc/data
 **/.nfs*
-<<<<<<< HEAD:.gitignore
-output/*.out
-=======
-*.out
->>>>>>> 179bc36ae2ad0f2602557a4a889c11d569f55d48:DimStarE/.gitignore
+output/
+history/

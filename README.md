@@ -1,4 +1,4 @@
-Updated 20-Feb, 2022.
+Updated 21-Feb, 2022.
 
 # DimStarE
 This is the code for implementation of "(Feng et al. 2022) Constrain on Relational Dimension for Knowledge Graph Embeddings"
@@ -14,16 +14,11 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 - [x] **"all_conjugate"**
 
 • Constrain the heads with:
-<<<<<<< HEAD
 - [ ] **"lnx"**
-=======
-- [] **"lnx"**
->>>>>>> 179bc36ae2ad0f2602557a4a889c11d569f55d48
 
 ### Baseline models
 - [x] 5StarE
 
-<<<<<<< HEAD
 <p align="center">
 <img src="https://github.com/mojtabanayyeri/5-StartE/blob/5-StarE/img/OtherTransfType.png" alt="Transformation of Exsiting KGE Models." width="500"/>
 </p>
@@ -32,10 +27,6 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 
 ### Datasets
 - [ ] UMLS
-=======
-### Datasets
-- [] UMLS
->>>>>>> 179bc36ae2ad0f2602557a4a889c11d569f55d48
 - [x] FB15K-237
 - [x] WN18RR
 - [x] YAGO3-10
@@ -43,9 +34,6 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 - [x] WN18
 
 ## Implementation of the project
-### Code path
-:blue_heart: Please help with codes in *"DimStarE/\*"* directory,  
-:see_no_evil: Please ignore codes in *"history/\*"* directory, those are just history codes saved in case.
 
 ### Prepare virtual environment
 Setup virtual environment, and install required basic packages:
@@ -75,7 +63,7 @@ python kbc/process_datasets.py
 
 ### Running the code
 ```
-python kbc/learn.py --dataset datasetName --model FiveStarE --rank dimension --optimizer
+python kbc/learn.py --dataset datasetName --model FiveStarE_all_conjugate --rank dimension --optimizer
 Adagrad --learning_rate lr --batch_size batchSize --regularizer N3 --reg regularizerValue
  --max_epochs EpochNumber --valid 50
 ```
