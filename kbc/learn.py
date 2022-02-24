@@ -6,7 +6,7 @@
 #
 
 # import sys
-# sys.path.append("/home/cl/xincan-f/embedding/dimension/DimStarE")
+# sys.path.append("/home/cl/xincan-f/embedding/dimension")
 
 import argparse
 from typing import Dict
@@ -25,6 +25,7 @@ from kbc.FiveStarE_hermitian import FiveStarE_hermitian
 from kbc.FiveStarE_all_conjugate import FiveStarE_all_conjugate
 from kbc.CP import CP
 from kbc.ComplEx import ComplEx
+from kbc.ComplEx_all_conjugate import ComplEx_all_conjugate
 
 
 big_datasets = ['FB15K', 'WN', 'WN18RR', 'FB237', 'YAGO3-10']
@@ -42,7 +43,8 @@ parser.add_argument(
 # set choices for running the project
 # If you created a new model, add it here!! 
 models = ['FiveStarE', 'CP', 'ComplEx',
-          'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate']
+          'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate',
+          'ComplEx_all_conjugate']
 parser.add_argument(
     '--model', choices=models,
     help="Model in {}".format(models)
@@ -124,6 +126,7 @@ model = {
     'FiveStarE_all_conjugate': lambda: FiveStarE_all_conjugate(dataset.get_shape(), args.rank, args.init),
     'CP': lambda: CP(dataset.get_shape(), args.rank, args.init),
     'ComplEx': lambda: ComplEx(dataset.get_shape(), args.rank, args.init),
+    'ComplEx_all_conjugate': lambda: ComplEx_all_conjugate(dataset.get_shape(), args.rank, args.init),
 }[args.model]()
 
 regularizer = {

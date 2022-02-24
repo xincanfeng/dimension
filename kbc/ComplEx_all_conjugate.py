@@ -4,12 +4,21 @@ import torch
 from torch import nn
 
 
-class ComplEx(KBCModel):
+'''
+ComplEx model:
+relation: a + bi,
+ComplEx_all_conjugate model:
+relation: split dimensions into two parts: a + bi, a - bi 
+'''
+
+
+class ComplEx_all_conjugate(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
+            # set a scale
             init_size: float = 1e-3
     ):
-        super(ComplEx, self).__init__()
+        super(ComplEx_all_conjugate, self).__init__()
         self.sizes = sizes
         self.rank = rank
 
@@ -58,7 +67,12 @@ def transformation(embeddings, x, flag, rank):
     # the real and imaginary part of head entity
     lhs = lhs[:, :rank], lhs[:, rank:]
     # the real and imaginary part of relation
-    rel = rel[:, :rank], rel[:, rank:]
+    # ComplEx model: rel = rel[:, :rank], rel[:, rank:]
+    # ComplEx_all_conjugate model: split dimensions into two parts: a + bi, a - bi
+    split_rank = int(rank/2)
+    rel = rel[:, :split_rank], rel[:, split_rank:rank]
+    # let the two real parts be the same, and the two imaginary parts be the opposite, then concatenate
+    rel = torch.cat((rel[0], rel[0]), 1), torch.cat((rel[1], -1*rel[1]), 1)
     # the real and imaginary part of tail entity
     rhs = rhs[:, :rank], rhs[:, rank:]
 
@@ -69,7 +83,7 @@ def transformation(embeddings, x, flag, rank):
             1, keepdim=True
         )
     elif flag == 'forward':
-        # get the parameters/weight value
+        # get the embedding layer weight
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:]
         return (
