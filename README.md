@@ -9,12 +9,12 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 
 ### Methods
 • Constrain the relations with:
-- [x] **"semi_hermitian"**
-- [x] **"hermitian"**
-- [x] **"all_conjugate"**
+- [x] **semi_hermitian**
+- [x] **hermitian**
+- [x] **all_conjugate**
 
 • Constrain the heads with:
-- [ ] **"lnx"**
+- [ ] **lnx**
 
 ### Baseline models
 - [x] 5StarE
