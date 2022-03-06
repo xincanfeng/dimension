@@ -1,5 +1,3 @@
-Updated 21-Feb, 2022.
-
 # DimStarE
 This is the code for implementation of "(Feng et al. 2022) Constrain on Relational Dimension for Knowledge Graph Embeddings"
 

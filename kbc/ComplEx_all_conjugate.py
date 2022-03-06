@@ -69,10 +69,10 @@ def transformation(embeddings, x, flag, rank):
     # the real and imaginary part of relation
     # ComplEx model: rel = rel[:, :rank], rel[:, rank:]
     # ComplEx_all_conjugate model: split dimensions into two parts: a + bi, a - bi
-    split_rank = int(rank/2)
-    rel = rel[:, :split_rank], rel[:, split_rank:rank]
+    rank_split = int(rank/2)
+    rel_split = rel[:, :rank_split], rel[:, rank_split:rank]
     # let the two real parts be the same, and the two imaginary parts be the opposite, then concatenate
-    rel = torch.cat((rel[0], rel[0]), 1), torch.cat((rel[1], -1*rel[1]), 1)
+    rel = torch.cat((rel_split[0], rel_split[0]), 1), torch.cat((rel_split[1], -1*rel_split[1]), 1)
     # the real and imaginary part of tail entity
     rhs = rhs[:, :rank], rhs[:, rank:]
 
@@ -86,12 +86,18 @@ def transformation(embeddings, x, flag, rank):
         # get the embedding layer weight
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:]
+        rel_temp = torch.sqrt(rel_split[0] ** 2 + rel_split[1] ** 2)
         return (
             (lhs[0] * rel[0] - lhs[1] * rel[1]) @ to_score[0].transpose(0, 1) +
             (lhs[0] * rel[1] + lhs[1] * rel[0]) @ to_score[1].transpose(0, 1)
         ), (
             torch.sqrt(lhs[0] ** 2 + lhs[1] ** 2),
-            torch.sqrt(rel[0] ** 2 + rel[1] ** 2),
+            # torch.sqrt(rel[0] ** 2 + rel[1] ** 2),
+            # above calculation can be saved because:
+            # rel[0] ** 2 = torch.cat((rel_split[0] ** 2, rel_split[0] ** 2), 1)
+            # rel[1] ** 2 = torch.cat((rel_split[1] ** 2, rel_split[1] ** 2), 1)
+            # rel[0] ** 2 + rel[1] ** 2 = torch.cat((rel_split[0] ** 2 + rel_split[1] ** 2, rel_split[0] ** 2 + rel_split[1] ** 2), 1)
+            torch.cat((rel_temp, rel_temp), 1),
             torch.sqrt(rhs[0] ** 2 + rhs[1] ** 2)
             )
     elif flag == 'get_queries':
