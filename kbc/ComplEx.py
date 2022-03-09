@@ -69,7 +69,7 @@ def transformation(embeddings, x, flag, rank):
             1, keepdim=True
         )
     elif flag == 'forward':
-        # get the parameters/weight value
+        # get the head/tail parameters/weight value
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:]
         return (
