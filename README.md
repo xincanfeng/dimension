@@ -13,6 +13,8 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 
 • Constrain the heads with:
 - [ ] **lnx**
+- [x] **logistic**
+- [x] **lgamma**
 
 ### Baseline models
 - [x] 5StarE
