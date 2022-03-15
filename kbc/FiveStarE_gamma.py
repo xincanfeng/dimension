@@ -72,8 +72,12 @@ def transformation(embeddings, x, flag, rank):
     re_tail, im_tail = rhs[:, :rank], rhs[:, rank:2*rank]
 
     # activation: the natural logarithm of the absolute value of the gamma function
-    re_head = torch.lgamma(re_head)
-    im_head = torch.lgamma(im_head)
+    re_head = (re_head - re_head.min()) / (re_head.max() - re_head.min())
+    im_head = (im_head - im_head.min()) / (im_head.max() - im_head.min())
+    re_head = torch.pow(re_head, 1.5)
+    im_head = torch.pow(im_head, 1.5)
+    # re_head = torch.lgamma(re_head)
+    # im_head = torch.lgamma(im_head)
 
     # start calculation
     # ah

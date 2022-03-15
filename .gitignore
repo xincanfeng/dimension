@@ -8,3 +8,4 @@ kbc/data
 **/.nfs*
 output/
 history/
+log.csv

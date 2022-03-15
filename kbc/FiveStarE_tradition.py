@@ -10,12 +10,12 @@ a, b, c, d in C
 '''
 
 
-class FiveStarE_logistic(KBCModel):
+class FiveStarE_tradition(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
             init_size: float = 1e-3
     ):
-        super(FiveStarE_logistic, self).__init__()
+        super(FiveStarE_tradition, self).__init__()
         self.sizes = sizes
         self.rank = rank
 
@@ -62,7 +62,7 @@ def transformation(embeddings, x, flag, rank):
     rhs = embeddings[0](x[:, 2])
 
     # the real and imaginary part of head
-    re_head, im_head, u = lhs[:, :rank], lhs[:, rank:2*rank], lhs[:, 2*rank:3*rank]
+    re_head, im_head = lhs[:, :rank], lhs[:, rank:2*rank]
     # the real and imaginary part of relation
     re_relation_a, im_relation_a, re_relation_b, im_relation_b, \
         re_relation_c, im_relation_c, re_relation_d, im_relation_d = \
@@ -71,14 +71,9 @@ def transformation(embeddings, x, flag, rank):
     # the real and imaginary part of tail
     re_tail, im_tail = rhs[:, :rank], rhs[:, rank:2*rank]
 
-    # activation: logistic map
-    # re_head, im_head in [0, 1]
-    # u: control parameter, u in [0, 4]
-    re_head = (re_head - re_head.min()) / (re_head.max() - re_head.min())
-    im_head = (im_head - im_head.min()) / (im_head.max() - im_head.min())
-    u = 4 * (u - u.min()) / (u.max() - u.min())
-    re_head = u * re_head * (1 - re_head)
-    im_head = u * im_head * (1 - im_head)
+    # activation:
+    re_head = torch.tanh(re_head) 
+    im_head = torch.tanh(im_head)
 
     # start calculation
     # ah
