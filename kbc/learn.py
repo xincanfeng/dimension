@@ -223,7 +223,7 @@ with codecs.open('log.csv', 'a') as up:
     line = '\n\nParameters\t{0}\n'.format(shell_cmd)
     up.write(line)
     
-    line = 'StartTime\t{0}\n'.format(epoch_start_time.strftime('%Y-%m-%D %H:%M:%S'))
+    line = 'EpochStartTime\t{0}\n'.format(epoch_start_time.strftime('%Y-%m-%d %H:%M:%S'))
     up.write(line)
     
     line = 'DurationTime\t{0}\n'.format((datetime.now() - epoch_start_time).total_seconds())
@@ -238,7 +238,7 @@ with codecs.open('log.csv', 'a') as up:
     line = 'BestValidMRR\t{0}\n'.format(best_valid_mrr)
     up.write(line)
 
-    line = '\tMRR\t\tH@1\tH@3\tH@10\n'
+    line = '\tMRR\tH@1\tH@3\tH@10\n'
     up.write(line)
     
     line = 'rhs\t{0:4f}\t{1:4f}\t{2:4f}\t{3:4f}\n'.format(test['mrrs_rhs'], test['hits_rhs'][0].item(), test['hits_rhs'][1].item(), test['hits_rhs'][2].item())

@@ -25,9 +25,9 @@ class FiveStarE_logistic(KBCModel):
             for s in sizes[:2]
         ])
         # the 1st embedding matrix is for head/tail entities
-        self.embeddings[0].weight.data *= init_size
+        # self.embeddings[0].weight.data *= init_size
         # the 2nd embedding matrix is for relations
-        self.embeddings[1].weight.data *= init_size
+        # self.embeddings[1].weight.data *= init_size
 
     def score(self, x):
         return transformation(embeddings=self.embeddings, x=x, flag="score", rank=self.rank)
@@ -74,11 +74,12 @@ def transformation(embeddings, x, flag, rank):
     # activation: logistic map
     # re_head, im_head in [0, 1]
     # u: control parameter, u in [0, 4]
-    re_head = (re_head - re_head.min()) / (re_head.max() - re_head.min())
-    im_head = (im_head - im_head.min()) / (im_head.max() - im_head.min())
-    u = 4 * (u - u.min()) / (u.max() - u.min())
+    re_head = (re_head - re_head.min()) / (re_head.max() - re_head.min() + 0.000000001)
+    im_head = (im_head - im_head.min()) / (im_head.max() - im_head.min() + 0.000000001)
+    u = 4 * (u - u.min()) / (u.max() - u.min() + 0.000000001)
     re_head = u * re_head * (1 - re_head)
     im_head = u * im_head * (1 - im_head)
+    # print(re_head, im_head)
 
     # start calculation
     # ah

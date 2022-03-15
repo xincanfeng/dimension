@@ -25,9 +25,9 @@ class FiveStarE_gamma(KBCModel):
             for s in sizes[:2]
         ])
         # the 1st embedding matrix is for head/tail entities
-        self.embeddings[0].weight.data *= init_size
+        # self.embeddings[0].weight.data *= init_size
         # the 2nd embedding matrix is for relations
-        self.embeddings[1].weight.data *= init_size
+        # self.embeddings[1].weight.data *= init_size
 
     def score(self, x):
         return transformation(embeddings=self.embeddings, x=x, flag="score", rank=self.rank)
@@ -72,8 +72,8 @@ def transformation(embeddings, x, flag, rank):
     re_tail, im_tail = rhs[:, :rank], rhs[:, rank:2*rank]
 
     # activation: the natural logarithm of the absolute value of the gamma function
-    re_head = (re_head - re_head.min()) / (re_head.max() - re_head.min())
-    im_head = (im_head - im_head.min()) / (im_head.max() - im_head.min())
+    re_head = (re_head - re_head.min()) / (re_head.max() - re_head.min() + 0.000000001)
+    im_head = (im_head - im_head.min()) / (im_head.max() - im_head.min() + 0.000000001)
     re_head = torch.pow(re_head, 1.5)
     im_head = torch.pow(im_head, 1.5)
     # re_head = torch.lgamma(re_head)
