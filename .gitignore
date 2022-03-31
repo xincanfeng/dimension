@@ -7,6 +7,5 @@ dist
 kbc/data
 **/.nfs*
 output/
+illustration/
 history/
-log.csv
-figure/

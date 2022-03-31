@@ -241,6 +241,7 @@ print("\n\n TEST: ", results)
 
 import os
 
+# output csv
 if not os.path.exists(args.save_dir):
     os.mkdir(args.save_dir)
         
@@ -275,12 +276,6 @@ with codecs.open(f'{args.save_dir}/log.csv', 'w') as up:
     line = '(rhs+lhs)/2\t{0:4f}\t{1:4f}\t{2:4f}\t{3:4f}\n'.format(test['MRR'], test['hits@[1,3,10]'][0].item(), test['hits@[1,3,10]'][1].item(), test['hits@[1,3,10]'][2].item())
     up.write(line)
 
-# plt.figure()
-# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['train']])
-# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['valid']])
-# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['test']])
-# plt.legend(['train', 'valid', 'test'])
-# plt.savefig('/figure/MRR.png')
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
