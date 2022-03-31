@@ -120,6 +120,11 @@ parser.add_argument(
     help="decay rate for second moment estimate in Adam"
 )
 
+parser.add_argument(
+    '--save_dir', default=None, type=str,
+    help="directory to save the output"
+)
+
 args = parser.parse_args()
 
 dataset = Dataset(args.dataset)
@@ -195,12 +200,15 @@ print('\t GPU: ', gpu_name)
 
 cur_loss = 0
 curve = {'train': [], 'valid': [], 'test': []}
+valid_epoch = []
 
 best_valid_epoch = 0
 best_valid_mrr = 0
 
 for e in range(args.max_epochs):
-    epoch_start_time = datetime.now()
+    if e + 1 == args.max_epochs:
+        last_epoch_start_time = datetime.now()
+
     cur_loss = optimizer.epoch(examples)
 
     if (e + 1) % args.valid == 0:
@@ -211,7 +219,8 @@ for e in range(args.max_epochs):
 
         curve['train'].append(train)
         curve['valid'].append(valid)
-        curve['test'].append(test) 
+        curve['test'].append(test)
+        valid_epoch.append(e + 1)
 
         # print current epoch number
         print("\t current epoch: ", e + 1)
@@ -222,43 +231,27 @@ for e in range(args.max_epochs):
         if valid['MRR'] > best_valid_mrr:
             best_valid_mrr = valid['MRR']
             best_valid_epoch = e + 1
+
+    if e + 1 == args.max_epochs:
+        last_epoch_end_time = datetime.now()
     
 results = dataset.eval(model, 'test', -1)
 print("\n\n TEST: ", results)
 
-import os
-import matplotlib.pyplot as plt
 
+import os
 
 if not os.path.exists(args.save_dir):
     os.mkdir(args.save_dir)
-
-# plot MRR
-# plt.figure()
-# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['train']])
-# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['valid']])
-# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['test']])
-# plt.legend(['train', 'valid', 'test'])
-# plt.savefig('/figure/MRR.png')
-
-plt.figure()
-plt.plot([y['MRR'] for y in curve['train']], color = 'DeepSkyBlue', linewidth = '3')
-plt.plot([y['MRR'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '3')
-plt.plot([y['MRR'] for y in curve['test']], color = 'Gold', linewidth = '3')
-plt.legend(['train', 'valid', 'test'])
-plt.savefig(args.save_dir + '/MRR.png')
-
-# save checkpoint
-# torch.save(model.state_dict(),f'{args.save_dir}/model_{e+1}.pt')
         
 with codecs.open(f'{args.save_dir}/log.csv', 'w') as up:
     line = '\n\nParameters\t{0}\n'.format(shell_cmd)
     up.write(line)
     
-    line = 'EpochStartTime\t{0}\n'.format(epoch_start_time.strftime('%Y-%m-%d %H:%M:%S'))
+    line = 'LastEpochStartTime\t{0}\n'.format(last_epoch_start_time.strftime('%Y-%m-%d %H:%M:%S'))
     up.write(line)
     
-    line = 'DurationTime\t{0}\n'.format((datetime.now() - epoch_start_time).total_seconds())
+    line = 'LastEpochDurationTime\t{0}\n'.format((last_epoch_end_time - last_epoch_start_time).total_seconds())
     up.write(line)
 
     line = 'GPU\t{0}\n'.format(gpu_name)
@@ -281,3 +274,46 @@ with codecs.open(f'{args.save_dir}/log.csv', 'w') as up:
     
     line = '(rhs+lhs)/2\t{0:4f}\t{1:4f}\t{2:4f}\t{3:4f}\n'.format(test['MRR'], test['hits@[1,3,10]'][0].item(), test['hits@[1,3,10]'][1].item(), test['hits@[1,3,10]'][2].item())
     up.write(line)
+
+# plt.figure()
+# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['train']])
+# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['valid']])
+# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['test']])
+# plt.legend(['train', 'valid', 'test'])
+# plt.savefig('/figure/MRR.png')
+
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+
+# plot
+fig = plt.figure(tight_layout=True)
+gs = gridspec.GridSpec(2, 2)
+
+ax0 = fig.add_subplot(gs[0, :])
+ax0.plot(valid_epoch, [y['MRR'] for y in curve['train']], color = 'Navy', linewidth = '2')
+ax0.plot(valid_epoch, [y['MRR'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '2')
+ax0.plot(valid_epoch, [y['MRR'] for y in curve['test']], color = 'Gold', linewidth = '2')
+ax0.legend(['train', 'valid', 'test'])
+ax0.set_ylabel('MRR', fontsize=12)
+ax0.set_xlabel('epoch', fontsize=12)
+
+ax1 = fig.add_subplot(gs[1, :1])
+ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
+ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
+ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
+ax1.legend(['train', 'valid', 'test'])
+ax1.set_ylabel('mrr_lhs', fontsize=12)
+ax1.set_xlabel('epoch', fontsize=12)
+
+ax2 = fig.add_subplot(gs[1, 1:])
+ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
+ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
+ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
+ax2.legend(['train', 'valid', 'test'])
+ax2.set_ylabel('mrr_rhs', fontsize=12)
+ax2.set_xlabel('epoch', fontsize=12)
+
+plt.savefig(args.save_dir + '/MRR.png')
+
+# save checkpoint
+# torch.save(model.state_dict(),f'{args.save_dir}/model_{e+1}.pt')
