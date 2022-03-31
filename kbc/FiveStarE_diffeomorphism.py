@@ -10,12 +10,12 @@ a, b, c, d in C
 '''
 
 
-class FiveStarE(KBCModel):
+class FiveStarE_diffeomorphism(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
             init_size: float = 1e-3
     ):
-        super(FiveStarE, self).__init__()
+        super(FiveStarE_diffeomorphism, self).__init__()
         self.sizes = sizes
         self.rank = rank
 
@@ -89,24 +89,19 @@ def transformation(embeddings, x, flag, rank):
     im_score_dn = im_score_c + im_relation_d
 
     # (ah + b)(ch + d)^-1
-    # denominator rationalization
-    # dn_re = sqrt{re^2 + im^2}
     dn_re = torch.sqrt(re_score_dn * re_score_dn + im_score_dn * im_score_dn)
-    
+
     up_re = torch.div(re_score_top * re_score_dn + im_score_top * im_score_dn, dn_re)
-    # up_im = torch.div(- re_score_top * im_score_dn + im_score_top * re_score_dn, dn_re)
     up_im = torch.div(re_score_top * im_score_dn - im_score_top * re_score_dn, dn_re)
 
     if flag == "score":
-        # Re(<h_r, t>): denominator is the same, so don't have to calculate it
         return torch.sum(up_re * re_tail + up_im * im_tail, 1, keepdim=True)
     elif flag == "forward":
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:2*rank]
-        return (             
+        return (
                 up_re @ to_score[0].transpose(0, 1) + up_im @ to_score[1].transpose(0, 1)
             ), (
-                # regularization
                 torch.sqrt(re_head ** 2 + im_head ** 2),
                 torch.sqrt(re_relation_a ** 2 + im_relation_a ** 2 + re_relation_c ** 2 +
                            im_relation_c ** 2 + re_relation_b ** 2 + im_relation_b ** 2 +

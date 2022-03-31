@@ -40,6 +40,7 @@ class KBCOptimizer(object):
                 l_fit = loss(predictions, truth)
                 l_reg = self.regularizer.forward(factors)
                 l = l_fit + l_reg
+                # l = l_fit
 
                 self.optimizer.zero_grad()
                 l.backward()

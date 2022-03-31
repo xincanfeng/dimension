@@ -10,6 +10,7 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 - [x] **semi_hermitian**
 - [x] **hermitian**
 - [x] **all_conjugate**
+- [x] **pseudo_conjugate**
 
 • Constrain the heads with:
 - [ ] **lnx**

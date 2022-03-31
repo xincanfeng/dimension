@@ -76,7 +76,8 @@ def transformation(embeddings, x, flag, rank):
     re_head, im_head = lhs[:, :rank], lhs[:, rank:2*rank]
     '''
     5*E model: needs 8 relation parameters
-    5*E_semi_hermitian model: re_relation_c = re_relation_b, im_relation_c = -im_relation_b,
+    5*E_semi_hermitian model: needs only 4 relation parameters:
+                              re_relation_c = re_relation_b, im_relation_c = -im_relation_b,
                               re_relation_d = re_relation_a, im_relation_d = -im_relation_a
     '''
     # the real and imaginary part of relation

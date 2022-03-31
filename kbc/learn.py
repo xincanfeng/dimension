@@ -19,7 +19,7 @@ from kbc.datasets import Dataset
 from kbc.regularizers import F2, N3
 from kbc.optimizers import KBCOptimizer
 
-# If you created a new model, import it here!!
+# if you created a new model, import it here!!
 from kbc.FiveStarE import FiveStarE
 from kbc.FiveStarE_semi_hermitian import FiveStarE_semi_hermitian
 from kbc.FiveStarE_hermitian import FiveStarE_hermitian
@@ -27,12 +27,13 @@ from kbc.FiveStarE_all_conjugate import FiveStarE_all_conjugate
 from kbc.FiveStarE_logistic import FiveStarE_logistic
 from kbc.FiveStarE_gamma import FiveStarE_gamma
 from kbc.FiveStarE_tradition import FiveStarE_tradition
+from kbc.FiveStarE_diffeomorphism import FiveStarE_diffeomorphism
 from kbc.CP import CP
 from kbc.ComplEx import ComplEx
 from kbc.ComplEx_all_conjugate import ComplEx_all_conjugate
+from kbc.ComplEx_pseudo_conjugate import ComplEx_pseudo_conjugate
 
 # import subprocess as sp
-
 
 # print GPU info in output file
 # COMMAND = 'nvidia-smi -l 1 --query-gpu=memory.used --format=csv'
@@ -52,11 +53,11 @@ parser.add_argument(
 )
 
 # set choices for running the project
-# If you created a new model, add it here!! 
+# if you created a new model, add it here!! 
 models = ['FiveStarE', 'CP', 'ComplEx',
           'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate',
-          'FiveStarE_logistic', 'FiveStarE_gamma', 'FiveStarE_tradition',
-          'ComplEx_all_conjugate']
+          'FiveStarE_logistic', 'FiveStarE_gamma', 'FiveStarE_tradition', 'FiveStarE_diffeomorphism',
+          'ComplEx_all_conjugate', 'ComplEx_pseudo_conjugate']
 parser.add_argument(
     '--model', choices=models,
     help="Model in {}".format(models)
@@ -130,7 +131,7 @@ examples = torch.from_numpy(dataset.get_train().astype('int64'))
 # print number of head entities, number of relations * 2, number of tail entities
 print(dataset.get_shape())
 
-# If you created a new model, add it here!! 
+# if you created a new model, add it here!! 
 model = {
     'FiveStarE': lambda: FiveStarE(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_semi_hermitian': lambda: FiveStarE_semi_hermitian(dataset.get_shape(), args.rank, args.init),
@@ -139,9 +140,11 @@ model = {
     'FiveStarE_logistic': lambda: FiveStarE_logistic(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_gamma': lambda: FiveStarE_gamma(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_tradition': lambda: FiveStarE_tradition(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_diffeomorphism': lambda: FiveStarE_diffeomorphism(dataset.get_shape(), args.rank, args.init),
     'CP': lambda: CP(dataset.get_shape(), args.rank, args.init),
     'ComplEx': lambda: ComplEx(dataset.get_shape(), args.rank, args.init),
     'ComplEx_all_conjugate': lambda: ComplEx_all_conjugate(dataset.get_shape(), args.rank, args.init),
+    'ComplEx_pseudo_conjugate': lambda: ComplEx_pseudo_conjugate(dataset.get_shape(), args.rank, args.init),
 }[args.model]()
 
 regularizer = {
@@ -164,7 +167,7 @@ optimizer = KBCOptimizer(model, regularizer, optim_method, args.batch_size)
 def avg_both(mrrs: Dict[str, float], hits: Dict[str, torch.FloatTensor]):
     """
     aggregate metrics for missing lhs and rhs
-    :param mrrs: d
+    :param mrrs:
     :param hits:
     :return:
     """
@@ -181,10 +184,11 @@ def avg_both(mrrs: Dict[str, float], hits: Dict[str, torch.FloatTensor]):
 import sys, subprocess, pdb, codecs
 from datetime import datetime
 
+
 shell_cmd = ' '.join(sys.argv)
 gpu_name = subprocess.check_output('nvidia-smi --query-gpu=gpu_name --format=csv', shell=True)
 gpu_name = gpu_name.decode().split('\n')[1]
-gpu_name = gpu_name.replace('NVIDIA GeForce GTX', '')
+# gpu_name = gpu_name.replace('NVIDIA GeForce GTX', '')
 
 print('\t Parameters: ', shell_cmd)
 print('\t GPU: ', gpu_name)
@@ -200,9 +204,9 @@ for e in range(args.max_epochs):
     cur_loss = optimizer.epoch(examples)
 
     if (e + 1) % args.valid == 0:
-        valid, test, train = [
+        train, valid, test = [
             avg_both(*dataset.eval(model, split, -1 if split != 'train' else 50000))
-            for split in ['valid', 'test', 'train']
+            for split in ['train', 'valid', 'test']
         ]
 
         curve['train'].append(train)
@@ -218,8 +222,36 @@ for e in range(args.max_epochs):
         if valid['MRR'] > best_valid_mrr:
             best_valid_mrr = valid['MRR']
             best_valid_epoch = e + 1
-            
-with codecs.open('log.csv', 'a') as up: 
+    
+results = dataset.eval(model, 'test', -1)
+print("\n\n TEST: ", results)
+
+import os
+import matplotlib.pyplot as plt
+
+
+if not os.path.exists(args.save_dir):
+    os.mkdir(args.save_dir)
+
+# plot MRR
+# plt.figure()
+# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['train']])
+# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['valid']])
+# plt.plot(range(len(curve['valid'])), [x['MRR'] for x in curve['test']])
+# plt.legend(['train', 'valid', 'test'])
+# plt.savefig('/figure/MRR.png')
+
+plt.figure()
+plt.plot([y['MRR'] for y in curve['train']], color = 'DeepSkyBlue', linewidth = '3')
+plt.plot([y['MRR'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '3')
+plt.plot([y['MRR'] for y in curve['test']], color = 'Gold', linewidth = '3')
+plt.legend(['train', 'valid', 'test'])
+plt.savefig(args.save_dir + '/MRR.png')
+
+# save checkpoint
+# torch.save(model.state_dict(),f'{args.save_dir}/model_{e+1}.pt')
+        
+with codecs.open(f'{args.save_dir}/log.csv', 'w') as up:
     line = '\n\nParameters\t{0}\n'.format(shell_cmd)
     up.write(line)
     
@@ -249,6 +281,3 @@ with codecs.open('log.csv', 'a') as up:
     
     line = '(rhs+lhs)/2\t{0:4f}\t{1:4f}\t{2:4f}\t{3:4f}\n'.format(test['MRR'], test['hits@[1,3,10]'][0].item(), test['hits@[1,3,10]'][1].item(), test['hits@[1,3,10]'][2].item())
     up.write(line)
-
-results = dataset.eval(model, 'test', -1)
-print("\n\n TEST: ", results)
