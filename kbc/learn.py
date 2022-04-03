@@ -24,6 +24,8 @@ from kbc.FiveStarE import FiveStarE
 from kbc.FiveStarE_semi_hermitian import FiveStarE_semi_hermitian
 from kbc.FiveStarE_hermitian import FiveStarE_hermitian
 from kbc.FiveStarE_all_conjugate import FiveStarE_all_conjugate
+from kbc.FiveStarE_para_conjugate import FiveStarE_para_conjugate
+from kbc.FiveStarE_down_conjugate import FiveStarE_down_conjugate
 from kbc.FiveStarE_logistic import FiveStarE_logistic
 from kbc.FiveStarE_gamma import FiveStarE_gamma
 from kbc.FiveStarE_tradition import FiveStarE_tradition
@@ -55,7 +57,8 @@ parser.add_argument(
 # set choices for running the project
 # if you created a new model, add it here!! 
 models = ['FiveStarE', 'CP', 'ComplEx',
-          'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate',
+          'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate', 
+          'FiveStarE_para_conjugate', 'FiveStarE_down_conjugate',
           'FiveStarE_logistic', 'FiveStarE_gamma', 'FiveStarE_tradition', 'FiveStarE_diffeomorphism',
           'ComplEx_all_conjugate', 'ComplEx_pseudo_conjugate']
 parser.add_argument(
@@ -142,6 +145,8 @@ model = {
     'FiveStarE_semi_hermitian': lambda: FiveStarE_semi_hermitian(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_hermitian': lambda: FiveStarE_hermitian(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_all_conjugate': lambda: FiveStarE_all_conjugate(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_para_conjugate': lambda: FiveStarE_para_conjugate(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_down_conjugate': lambda: FiveStarE_down_conjugate(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_logistic': lambda: FiveStarE_logistic(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_gamma': lambda: FiveStarE_gamma(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_tradition': lambda: FiveStarE_tradition(dataset.get_shape(), args.rank, args.init),
@@ -246,7 +251,7 @@ if not os.path.exists(args.save_dir):
     os.mkdir(args.save_dir)
         
 with codecs.open(f'{args.save_dir}/log.csv', 'w') as up:
-    line = '\n\nParameters\t{0}\n'.format(shell_cmd)
+    line = '\n\n\t\t\tParameters\t{0}\n'.format(shell_cmd)
     up.write(line)
     
     line = 'LastEpochStartTime\t{0}\n'.format(last_epoch_start_time.strftime('%Y-%m-%d %H:%M:%S'))
