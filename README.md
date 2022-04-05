@@ -13,6 +13,8 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 - [x] **pseudo_conjugate**
 - [x] **para_conjugate**
 - [x] **down_conjugate**
+- [x] **unitary**
+- [x] **unit_circle**
 
 • Constrain the heads with:
 - [ ] **lnx**
@@ -31,7 +33,7 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 - [x] ComplEx
 
 ### Datasets
-- [ ] UMLS
+- [x] UMLS
 - [x] FB15K-237
 - [x] WN18RR
 - [x] YAGO3-10

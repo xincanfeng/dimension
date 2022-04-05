@@ -26,6 +26,8 @@ from kbc.FiveStarE_hermitian import FiveStarE_hermitian
 from kbc.FiveStarE_all_conjugate import FiveStarE_all_conjugate
 from kbc.FiveStarE_para_conjugate import FiveStarE_para_conjugate
 from kbc.FiveStarE_down_conjugate import FiveStarE_down_conjugate
+from kbc.FiveStarE_unitary import FiveStarE_unitary
+from kbc.FiveStarE_unit_circle import FiveStarE_unit_circle
 from kbc.FiveStarE_logistic import FiveStarE_logistic
 from kbc.FiveStarE_gamma import FiveStarE_gamma
 from kbc.FiveStarE_tradition import FiveStarE_tradition
@@ -42,7 +44,7 @@ from kbc.ComplEx_pseudo_conjugate import ComplEx_pseudo_conjugate
 # sp.check_output(COMMAND.split())
 
 
-big_datasets = ['FB15K', 'WN', 'WN18RR', 'FB237', 'YAGO3-10']
+big_datasets = ['FB15K', 'WN', 'WN18RR', 'FB237', 'YAGO3-10', 'UMLS']
 datasets = big_datasets
 
 parser = argparse.ArgumentParser(
@@ -58,7 +60,7 @@ parser.add_argument(
 # if you created a new model, add it here!! 
 models = ['FiveStarE', 'CP', 'ComplEx',
           'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate', 
-          'FiveStarE_para_conjugate', 'FiveStarE_down_conjugate',
+          'FiveStarE_para_conjugate', 'FiveStarE_down_conjugate', 'FiveStarE_unitary', 'FiveStarE_unit_circle',
           'FiveStarE_logistic', 'FiveStarE_gamma', 'FiveStarE_tradition', 'FiveStarE_diffeomorphism',
           'ComplEx_all_conjugate', 'ComplEx_pseudo_conjugate']
 parser.add_argument(
@@ -147,6 +149,8 @@ model = {
     'FiveStarE_all_conjugate': lambda: FiveStarE_all_conjugate(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_para_conjugate': lambda: FiveStarE_para_conjugate(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_down_conjugate': lambda: FiveStarE_down_conjugate(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_unitary': lambda: FiveStarE_unitary(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_unit_circle': lambda: FiveStarE_unit_circle(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_logistic': lambda: FiveStarE_logistic(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_gamma': lambda: FiveStarE_gamma(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_tradition': lambda: FiveStarE_tradition(dataset.get_shape(), args.rank, args.init),
