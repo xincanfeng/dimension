@@ -4,13 +4,22 @@ import torch
 from torch import nn
 
 
-class ComplEx(KBCModel):
+'''
+ComplEx model:
+relation: a + bi,
+
+ComplEx_all_conjugate model:
+relation: split dimensions into two parts: a + bi, a - bi 
+'''
+
+
+class ComplEx_all_conjugate(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
             # set a scale
             init_size: float = 1e-3
     ):
-        super(ComplEx, self).__init__()
+        super(ComplEx_all_conjugate, self).__init__()
         self.sizes = sizes
         self.rank = rank
 
@@ -58,30 +67,52 @@ def transformation(embeddings, x, flag, rank):
 
     # the real and imaginary part of head entity
     lhs = lhs[:, :rank], lhs[:, rank:]
+
     # the real and imaginary part of relation
+    # ComplEx model: rel = rel[:, :rank], rel[:, rank:]
+    # ComplEx_all_conjugate model: split dimensions into two parts: a + bi, a - bi
+    #                              thus, rel[0] = [a a], rel[1] = [b -b]
     rel = rel[:, :rank], rel[:, rank:]
+    rank_split = int(rank/2)
+    # set the two real parts the same, and the two imaginary parts the opposite, put the values into the container
+    rel[0][:, rank_split:] = rel[0][:, :rank_split]
+    rel[1][:, rank_split:] = -rel[1][:, :rank_split]
+
     # the real and imaginary part of tail entity
     rhs = rhs[:, :rank], rhs[:, rank:]
 
-    re = lhs[0] * rel[0] - lhs[1] * rel[1]
-    im = lhs[0] * rel[1] + lhs[1] * rel[0]
-
+    # head * transformation = tail
+    # score function: scalar product <tail', tail>
     if flag == 'score':
-        # head * transformation = tail
-        # score function: scalar product <tail', tail>
-        return torch.sum(re * rhs[0] + im * rhs[1], 1, keepdim=True)
+        return torch.sum(
+            (lhs[0] * rel[0] - lhs[1] * rel[1]) * rhs[0] +
+            (lhs[0] * rel[1] + lhs[1] * rel[0]) * rhs[1],
+            1, keepdim=True
+        )
     elif flag == 'forward':
         # get the head/tail parameters/weight value
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:]
+        rel_temp1 = torch.sqrt(rel[0][:, :rank_split] ** 2 + rel[1][:, :rank_split] ** 2)
+        rel_temp2 = torch.zeros_like(rel[0])
+        rel_temp2[:, :rank_split] = rel_temp2[:, rank_split:] = rel_temp1
         return (
-            re @ to_score[0].transpose(0, 1) + im @ to_score[1].transpose(0, 1)
+            (lhs[0] * rel[0] - lhs[1] * rel[1]) @ to_score[0].transpose(0, 1) +
+            (lhs[0] * rel[1] + lhs[1] * rel[0]) @ to_score[1].transpose(0, 1)
         ), (
             torch.sqrt(lhs[0] ** 2 + lhs[1] ** 2),
-            torch.sqrt(rel[0] ** 2 + rel[1] ** 2),
+            # torch.sqrt(rel[0] ** 2 + rel[1] ** 2),
+            # above calculation can be saved because:
+            # rel[0] ** 2 = torch.cat((rel_split[0] ** 2, rel_split[0] ** 2), 1)
+            # rel[1] ** 2 = torch.cat((rel_split[1] ** 2, rel_split[1] ** 2), 1)
+            # rel[0] ** 2 + rel[1] ** 2 = torch.cat((rel_split[0] ** 2 + rel_split[1] ** 2, rel_split[0] ** 2 + rel_split[1] ** 2), 1)
+            rel_temp2,
             torch.sqrt(rhs[0] ** 2 + rhs[1] ** 2)
             )
     elif flag == 'get_queries':
-        return torch.cat([re, im], 1)
+        return torch.cat([
+            lhs[0] * rel[0] - lhs[1] * rel[1],
+            lhs[0] * rel[1] + lhs[1] * rel[0]
+        ], 1)
     else:
         raise ValueError('unsupported flag: {}'.format(flag))

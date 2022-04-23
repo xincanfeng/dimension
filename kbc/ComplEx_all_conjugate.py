@@ -65,22 +65,19 @@ def transformation(embeddings, x, flag, rank):
     # assign embedding parameters to tail entity
     rhs = embeddings[0](x[:, 2])
 
-    # the real and imaginary part of head entity
-    lhs = lhs[:, :rank], lhs[:, rank:]
-
-    # the real and imaginary part of relation
-    # ComplEx model: rel = rel[:, :rank], rel[:, rank:]
-    # ComplEx_all_conjugate model: split dimensions into two parts: a + bi, a - bi
-    #                              thus, rel[0] = [a a], rel[1] = [b -b]
-    rel = rel[:, :rank], rel[:, rank:]
     rank_split = int(rank/2)
-    # set the two real parts the same, and the two imaginary parts the opposite, put the values into the container
-    rel[0][:, rank_split:] = rel[0][:, :rank_split]
-    rel[1][:, rank_split:] = -rel[1][:, :rank_split]
-
+    # the real and imaginary part of head entity
+    # lhs = lhs[:, :rank], lhs[:, rank:]
+    lhs = lhs[:, :rank_split], lhs[:, rank_split:rank], lhs[:, rank:3*rank_split], lhs[:, 3*rank_split:]
+    # the real and imaginary part of relation
+    # rel = rel[:, :rank], rel[:, rank:]
+    rel = rel[:, :rank_split], rel[:, rank_split:rank], rel[:, rank:3*rank_split], rel[:, 3*rank_split:]
     # the real and imaginary part of tail entity
-    rhs = rhs[:, :rank], rhs[:, rank:]
+    # rhs = rhs[:, :rank], rhs[:, rank:]
+    rhs = rhs[:, :rank_split], rhs[:, rank_split:rank], rhs[:, rank:3*rank_split], rhs[:, 3*rank_split:]
 
+    # head * transformation = tail
+    # score function: scalar product <tail', tail>
     if flag == 'score':
         return torch.sum(
             (lhs[0] * rel[0] - lhs[1] * rel[1]) * rhs[0] +
@@ -91,20 +88,12 @@ def transformation(embeddings, x, flag, rank):
         # get the head/tail parameters/weight value
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:]
-        rel_temp1 = torch.sqrt(rel[0][:, :rank_split] ** 2 + rel[1][:, :rank_split] ** 2)
-        rel_temp2 = torch.zeros_like(rel[0])
-        rel_temp2[:, :rank_split] = rel_temp2[:, rank_split:] = rel_temp1
         return (
             (lhs[0] * rel[0] - lhs[1] * rel[1]) @ to_score[0].transpose(0, 1) +
             (lhs[0] * rel[1] + lhs[1] * rel[0]) @ to_score[1].transpose(0, 1)
         ), (
             torch.sqrt(lhs[0] ** 2 + lhs[1] ** 2),
-            # torch.sqrt(rel[0] ** 2 + rel[1] ** 2),
-            # above calculation can be saved because:
-            # rel[0] ** 2 = torch.cat((rel_split[0] ** 2, rel_split[0] ** 2), 1)
-            # rel[1] ** 2 = torch.cat((rel_split[1] ** 2, rel_split[1] ** 2), 1)
-            # rel[0] ** 2 + rel[1] ** 2 = torch.cat((rel_split[0] ** 2 + rel_split[1] ** 2, rel_split[0] ** 2 + rel_split[1] ** 2), 1)
-            rel_temp2,
+            torch.sqrt(rel[0] ** 2 + rel[1] ** 2),
             torch.sqrt(rhs[0] ** 2 + rhs[1] ** 2)
             )
     elif flag == 'get_queries':
