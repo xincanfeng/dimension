@@ -8,18 +8,18 @@ from torch import nn
 ComplEx model:
 relation: a + bi,
 
-ComplEx_all_conjugate:
-relation: split dimensions into two parts: a_1 + a_2i, a_1 - a_2i 
+ComplEx_spilt:
+relation: split dimensions into two parts: a_1 + a_2i, b_1 + b_2i 
 '''
 
 
-class ComplEx_all_conjugate(KBCModel):
+class ComplEx_split(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
             # set a scale
             init_size: float = 1e-3
     ):
-        super(ComplEx_all_conjugate, self).__init__()
+        super(ComplEx_split, self).__init__()
         self.sizes = sizes
         self.rank = rank
 
@@ -72,14 +72,12 @@ def transformation(embeddings, x, flag, rank):
     lhs = lhs[:, :rank_split], lhs[:, rank_split:rank], lhs[:, rank:3*rank_split], lhs[:, 3*rank_split:]
     # the real and imaginary part of relation
     # rel = rel[:, :rank], rel[:, rank:]
-    # rel: re, im
-    rel = rel[:, :rank_split], rel[:, rank_split:rank]
+    rel = rel[:, :rank_split], rel[:, rank_split:rank], rel[:, rank:3*rank_split], rel[:, 3*rank_split:]
     # the real and imaginary part of tail entity
     rhs = rhs[:, :rank], rhs[:, rank:]
 
-    # ComplEx_all_conjugate model: rel[2] = rel[0], rel[3] = -rel[1]
-    re = lhs[0] * rel[0] - lhs[1] * rel[1], lhs[2] * rel[0] + lhs[3] * rel[1]
-    im = lhs[0] * rel[1] + lhs[1] * rel[0], -lhs[2] * rel[1] + lhs[3] * rel[0]
+    re = lhs[0] * rel[0] - lhs[1] * rel[1], lhs[2] * rel[2] - lhs[3] * rel[3]
+    im = lhs[0] * rel[1] + lhs[1] * rel[0], lhs[2] * rel[3] + lhs[3] * rel[2]
 
     re = torch.cat([re[0], re[1]], 1)
     im = torch.cat([im[0], im[1]], 1)
@@ -92,12 +90,11 @@ def transformation(embeddings, x, flag, rank):
         # get the head/tail parameters/weight value
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:]
-        temp = torch.sqrt(rel[0] ** 2 + rel[1] ** 2)
         return (
             re @ to_score[0].transpose(0, 1) + im @ to_score[1].transpose(0, 1)
         ), (
             torch.cat([torch.sqrt(lhs[0] ** 2 + lhs[1] ** 2), torch.sqrt(lhs[2] ** 2 + lhs[3] ** 2)], 1),
-            torch.cat([temp, temp], 1),
+            torch.cat([torch.sqrt(rel[0] ** 2 + rel[1] ** 2), torch.sqrt(rel[2] ** 2 + rel[3] ** 2)], 1),
             torch.sqrt(rhs[0] ** 2 + rhs[1] ** 2)
             )
     elif flag == 'get_queries':
