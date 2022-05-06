@@ -76,6 +76,7 @@ def transformation(embeddings, x, flag, rank):
     # the real and imaginary part of tail entity
     rhs = rhs[:, :rank], rhs[:, rank:]
 
+    # the real and imaginary part of head * transformation
     re = lhs[0] * rel[0] - lhs[1] * rel[1], lhs[2] * rel[2] - lhs[3] * rel[3]
     im = lhs[0] * rel[1] + lhs[1] * rel[0], lhs[2] * rel[3] + lhs[3] * rel[2]
 
