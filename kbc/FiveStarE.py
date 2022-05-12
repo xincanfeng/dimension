@@ -22,6 +22,7 @@ class FiveStarE(KBCModel):
         # assign two embedding parameters matrices from torch (at each batch)
         self.embeddings = nn.ModuleList([
             nn.Embedding(s, 8*rank, sparse=True)
+            # nn.Embedding(s, 8*rank, sparse=False)
             for s in sizes[:2]
         ])
         # the 1st embedding matrix is for head/tail entities

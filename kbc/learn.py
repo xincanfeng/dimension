@@ -172,7 +172,7 @@ model.to(device)
 optim_method = {
     'Adagrad': lambda: optim.Adagrad(model.parameters(), lr=args.learning_rate),
     'Adam': lambda: optim.Adam(model.parameters(), lr=args.learning_rate, betas=(args.decay1, args.decay2)),
-    'SGD': lambda: optim.SGD(model.parameters(), lr=args.learning_rate)
+    'SGD': lambda: optim.SGD(model.parameters(), lr=args.learning_rate),
 }[args.optimizer]()
 
 optimizer = KBCOptimizer(model, regularizer, optim_method, args.batch_size)
