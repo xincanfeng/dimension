@@ -32,6 +32,7 @@ from kbc.FiveStarE_logistic import FiveStarE_logistic
 from kbc.FiveStarE_gamma import FiveStarE_gamma
 from kbc.FiveStarE_tradition import FiveStarE_tradition
 from kbc.FiveStarE_diffeomorphism import FiveStarE_diffeomorphism
+from kbc.FiveStarE_half_reg import FiveStarE_half_reg
 from kbc.CP import CP
 from kbc.ComplEx import ComplEx
 from kbc.ComplEx_all_conjugate import ComplEx_all_conjugate
@@ -61,7 +62,7 @@ parser.add_argument(
 models = ['FiveStarE', 'CP', 'ComplEx',
           'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate', 
           'FiveStarE_para_conjugate', 'FiveStarE_down_conjugate', 'FiveStarE_unitary', 'FiveStarE_unit_circle',
-          'FiveStarE_logistic', 'FiveStarE_gamma', 'FiveStarE_tradition', 'FiveStarE_diffeomorphism',
+          'FiveStarE_logistic', 'FiveStarE_gamma', 'FiveStarE_tradition', 'FiveStarE_diffeomorphism', 'FiveStarE_half_reg',
           'ComplEx_all_conjugate', 'ComplEx_pseudo_conjugate']
 parser.add_argument(
     '--model', choices=models,
@@ -155,6 +156,7 @@ model = {
     'FiveStarE_gamma': lambda: FiveStarE_gamma(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_tradition': lambda: FiveStarE_tradition(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_diffeomorphism': lambda: FiveStarE_diffeomorphism(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_half_reg': lambda: FiveStarE_half_reg(dataset.get_shape(), args.rank, args.init),
     'CP': lambda: CP(dataset.get_shape(), args.rank, args.init),
     'ComplEx': lambda: ComplEx(dataset.get_shape(), args.rank, args.init),
     'ComplEx_all_conjugate': lambda: ComplEx_all_conjugate(dataset.get_shape(), args.rank, args.init),
