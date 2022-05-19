@@ -6,7 +6,7 @@ This is the code for implementation of "(Feng et al. 2022) Constrain on Relation
 We aim to modify several Knowledge Graph Embedding (KGE) baseline models using our proposed Constraint Methods on Dimensions.
 
 ### Methods
-• Constrain the relations with:
+• Constrain the relations with-:
 - [x] **all_conjugate**
 - [x] **unitary**
 - [x] **para_conjugate**
