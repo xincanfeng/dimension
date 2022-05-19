@@ -1,4 +1,4 @@
-# DimStarE
+# 5starCe
 This is the code for implementation of "(Feng et al. 2022) Constrain on Relational Dimension for Knowledge Graph Embeddings"
 
 
@@ -7,29 +7,13 @@ We aim to modify several Knowledge Graph Embedding (KGE) baseline models using o
 
 ### Methods
 • Constrain the relations with:
-- [x] **semi_hermitian**
-- [x] **hermitian**
 - [x] **all_conjugate**
-- [x] **pseudo_conjugate**
+- [x] **unitary**
 - [x] **para_conjugate**
 - [x] **down_conjugate**
-- [x] **unitary**
-- [x] **unit_circle**
-
-• Constrain the heads with:
-- [ ] **lnx**
-- [x] **tanh**
-- [x] **logistic**
-- [x] **lgamma**
-- [x] **gamma**
 
 ### Baseline models
 - [x] 5StarE
-
-<p align="center">
-<img src="https://github.com/mojtabanayyeri/5-StartE/blob/5-StarE/img/OtherTransfType.png" alt="Transformation of Exsiting KGE Models." width="500"/>
-</p>
-
 - [x] ComplEx
 
 ### Datasets
