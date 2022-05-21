@@ -199,7 +199,7 @@ def avg_both(mrrs: Dict[str, float], hits: Dict[str, torch.FloatTensor]):
 
 import sys, subprocess, pdb, codecs
 from datetime import datetime
-
+import time
 
 shell_cmd = ' '.join(sys.argv)
 gpu_name = subprocess.check_output('nvidia-smi --query-gpu=gpu_name --format=csv', shell=True)
@@ -222,6 +222,10 @@ for e in range(args.max_epochs):
 
     cur_loss = optimizer.epoch(examples)
 
+    if e + 1 == args.max_epochs:
+        last_epoch_end_time = datetime.now()
+        # last_epoch_end_time = time.time()
+
     if (e + 1) % args.valid == 0:
         train, valid, test = [
             avg_both(*dataset.eval(model, split, -1 if split != 'train' else 50000))
@@ -242,9 +246,6 @@ for e in range(args.max_epochs):
         if valid['MRR'] > best_valid_mrr:
             best_valid_mrr = valid['MRR']
             best_valid_epoch = e + 1
-
-    if e + 1 == args.max_epochs:
-        last_epoch_end_time = datetime.now()
     
 results = dataset.eval(model, 'test', -1)
 print("\n\n TEST: ", results)
