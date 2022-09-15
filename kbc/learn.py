@@ -21,22 +21,14 @@ from kbc.optimizers import KBCOptimizer
 
 # if you created a new model, import it here!!
 from kbc.FiveStarE import FiveStarE
-from kbc.FiveStarE_semi_hermitian import FiveStarE_semi_hermitian
-from kbc.FiveStarE_hermitian import FiveStarE_hermitian
-from kbc.FiveStarE_all_conjugate import FiveStarE_all_conjugate
-from kbc.FiveStarE_para_conjugate import FiveStarE_para_conjugate
-from kbc.FiveStarE_down_conjugate import FiveStarE_down_conjugate
-from kbc.FiveStarE_unitary import FiveStarE_unitary
-from kbc.FiveStarE_unit_circle import FiveStarE_unit_circle
-from kbc.FiveStarE_logistic import FiveStarE_logistic
-from kbc.FiveStarE_gamma import FiveStarE_gamma
-from kbc.FiveStarE_tradition import FiveStarE_tradition
-from kbc.FiveStarE_diffeomorphism import FiveStarE_diffeomorphism
+from kbc.FiveStarE_conjugate import FiveStarE_conjugate
+from kbc.FiveStarE_negative_conjugate import FiveStarE_negative_conjugate
+from kbc.FiveStarE_horizontal_conjugate import FiveStarE_horizontal_conjugate
+from kbc.FiveStarE_vertical_conjugate import FiveStarE_vertical_conjugate
 from kbc.FiveStarE_half_reg import FiveStarE_half_reg
 from kbc.CP import CP
 from kbc.ComplEx import ComplEx
-from kbc.ComplEx_all_conjugate import ComplEx_all_conjugate
-from kbc.ComplEx_pseudo_conjugate import ComplEx_pseudo_conjugate
+from kbc.ComplEx_conjugate import ComplEx_conjugate
 
 # import subprocess as sp
 
@@ -60,10 +52,9 @@ parser.add_argument(
 # set choices for running the project
 # if you created a new model, add it here!! 
 models = ['FiveStarE', 'CP', 'ComplEx',
-          'FiveStarE_hermitian', 'FiveStarE_semi_hermitian', 'FiveStarE_all_conjugate', 
-          'FiveStarE_para_conjugate', 'FiveStarE_down_conjugate', 'FiveStarE_unitary', 'FiveStarE_unit_circle',
-          'FiveStarE_logistic', 'FiveStarE_gamma', 'FiveStarE_tradition', 'FiveStarE_diffeomorphism', 'FiveStarE_half_reg',
-          'ComplEx_all_conjugate', 'ComplEx_pseudo_conjugate']
+          'FiveStarE_conjugate', 'ComplEx_conjugate', 
+          'FiveStarE_horizontal_conjugate', 'FiveStarE_vertical_conjugate', 'FiveStarE_negative_conjugate', 'FiveStarE_half_reg',
+          ]
 parser.add_argument(
     '--model', choices=models,
     help="Model in {}".format(models)
@@ -145,22 +136,14 @@ print(dataset.get_shape())
 # if you created a new model, add it here!! 
 model = {
     'FiveStarE': lambda: FiveStarE(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_semi_hermitian': lambda: FiveStarE_semi_hermitian(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_hermitian': lambda: FiveStarE_hermitian(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_all_conjugate': lambda: FiveStarE_all_conjugate(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_para_conjugate': lambda: FiveStarE_para_conjugate(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_down_conjugate': lambda: FiveStarE_down_conjugate(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_unitary': lambda: FiveStarE_unitary(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_unit_circle': lambda: FiveStarE_unit_circle(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_logistic': lambda: FiveStarE_logistic(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_gamma': lambda: FiveStarE_gamma(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_tradition': lambda: FiveStarE_tradition(dataset.get_shape(), args.rank, args.init),
-    'FiveStarE_diffeomorphism': lambda: FiveStarE_diffeomorphism(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_conjugate': lambda: FiveStarE_conjugate(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_horizontal_conjugate': lambda: FiveStarE_horizontal_conjugate(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_vertical_conjugate': lambda: FiveStarE_vertical_conjugate(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_negative_conjugate': lambda: FiveStarE_negative_conjugate(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_half_reg': lambda: FiveStarE_half_reg(dataset.get_shape(), args.rank, args.init),
     'CP': lambda: CP(dataset.get_shape(), args.rank, args.init),
     'ComplEx': lambda: ComplEx(dataset.get_shape(), args.rank, args.init),
-    'ComplEx_all_conjugate': lambda: ComplEx_all_conjugate(dataset.get_shape(), args.rank, args.init),
-    'ComplEx_pseudo_conjugate': lambda: ComplEx_pseudo_conjugate(dataset.get_shape(), args.rank, args.init),
+    'ComplEx_conjugate': lambda: ComplEx_conjugate(dataset.get_shape(), args.rank, args.init),
 }[args.model]()
 
 regularizer = {

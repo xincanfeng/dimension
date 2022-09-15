@@ -8,18 +8,18 @@ from torch import nn
 ComplEx model:
 relation: a + bi,
 
-ComplEx_all_conjugate:
+ComplEx_conjugate:
 relation: split dimensions into two parts: a_1 + a_2i, a_1 - a_2i 
 '''
 
 
-class ComplEx_all_conjugate(KBCModel):
+class ComplEx_conjugate(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
             # set a scale
             init_size: float = 1e-3
     ):
-        super(ComplEx_all_conjugate, self).__init__()
+        super(ComplEx_conjugate, self).__init__()
         self.sizes = sizes
         self.rank = rank
 
@@ -77,7 +77,7 @@ def transformation(embeddings, x, flag, rank):
     # the real and imaginary part of tail entity
     rhs = rhs[:, :rank], rhs[:, rank:]
 
-    # ComplEx_all_conjugate model: rel[2] = rel[0], rel[3] = -rel[1]
+    # ComplEx_conjugate model: rel[2] = rel[0], rel[3] = -rel[1]
     re = lhs[0] * rel[0] - lhs[1] * rel[1], lhs[2] * rel[0] + lhs[3] * rel[1]
     im = lhs[0] * rel[1] + lhs[1] * rel[0], -lhs[2] * rel[1] + lhs[3] * rel[0]
 

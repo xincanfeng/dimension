@@ -5,31 +5,27 @@ from torch import nn
 
 
 '''
-5*E_all_conjugate model:
+5*E_para_conjugate model:
 a, b, c, d in C,
-c = conjugate(b)
-d = conjugate(a)
+b = conjugate(a)
+d = conjugate(c)
 i.e.
-re_relation_c = re_relation_b
-im_relation_c = -im_relation_b
-re_relation_d = re_relation_a
-im_relation_d = -im_relation_a
+re_relation_b = re_relation_a
+im_relation_b = -im_relation_a
+re_relation_d = re_relation_c
+im_relation_d = -im_relation_c
 '''
 
 
-class FiveStarE_all_conjugate(KBCModel):
+class FiveStarE_horizontal_conjugate(KBCModel):
     def __init__(
             self, sizes: Tuple[int, int, int], rank: int,
             init_size: float = 1e-3
     ):
-        super(FiveStarE_all_conjugate, self).__init__()
+        super(FiveStarE_horizontal_conjugate, self).__init__()
         self.sizes = sizes
         self.rank = rank
 
-        '''
-        5*E model: needs 8*rank parameters
-        5*E_all_conjugate model: only need 4*rank parameters
-        '''
         # assign two embedding parameters matrices from torch (at each batch)
         self.embeddings = nn.ModuleList([
             nn.Embedding(s, 4*rank, sparse=True)
@@ -62,7 +58,7 @@ def transformation(embeddings, x, flag, rank):
     flag: ["score", "forward", "get_queries"]
     rank: dimensions number of embedding
     '''
-    # x[:, 0]: head information 
+    # x[:, 0]: head information
     # assign embedding parameters to head entity
     lhs = embeddings[0](x[:, 0])
     # x[:, 1]: relation information
@@ -76,12 +72,12 @@ def transformation(embeddings, x, flag, rank):
     re_head, im_head = lhs[:, :rank], lhs[:, rank:2*rank]
     '''
     5*E model: needs 8 relation parameters
-    5*E_all_conjugate model: needs only 4 relation parameters:
-                              re_relation_c = re_relation_b, im_relation_c = -im_relation_b,
-                              re_relation_d = re_relation_a, im_relation_d = -im_relation_a
+    5*E_para_conjugate model: needs only 4 relation parameters:
+                              re_relation_b = re_relation_a, im_relation_b = -im_relation_a,
+                              re_relation_d = re_relation_c, im_relation_d = -im_relation_c
     '''
     # the real and imaginary part of relation
-    re_relation_a, im_relation_a, re_relation_b, im_relation_b = \
+    re_relation_a, im_relation_a, re_relation_c, im_relation_c = \
         rel[:, :rank], rel[:, rank:2*rank], rel[:, 2*rank:3*rank], rel[:, 3*rank:4*rank]
     # the real and imaginary part of tail
     re_tail, im_tail = rhs[:, :rank], rhs[:, rank:2*rank]
@@ -91,34 +87,39 @@ def transformation(embeddings, x, flag, rank):
     re_score_a = re_head * re_relation_a - im_head * im_relation_a
     im_score_a = re_head * im_relation_a + im_head * re_relation_a
 
-    # ah + b
-    re_score_top = re_score_a + re_relation_b
-    im_score_top = im_score_a + im_relation_b
+    # ah + 'b'
+    re_score_top = re_score_a + re_relation_a
+    im_score_top = im_score_a - im_relation_a
 
-    # "c"h
-    re_score_c = re_head * re_relation_b + im_head * im_relation_b
-    im_score_c = -re_head * im_relation_b + im_head * re_relation_b
+    # ch
+    re_score_c = re_head * re_relation_c - im_head * im_relation_c
+    im_score_c = re_head * im_relation_c + im_head * re_relation_c
 
-    # "c"h + 'd'
-    re_score_dn = re_score_c + re_relation_a
-    im_score_dn = im_score_c - im_relation_a
+    # ch + 'd'
+    re_score_dn = re_score_c + re_relation_c
+    im_score_dn = im_score_c - im_relation_c
 
-    # (ah + b)("c"h + 'd')^-1
+    # (ah + 'b')(ch + 'd')^-1
+    # denominator rationalization
+    # dn_re = sqrt{re^2 + im^2}
     dn_re = torch.sqrt(re_score_dn * re_score_dn + im_score_dn * im_score_dn)
-
+    
     up_re = torch.div(re_score_top * re_score_dn + im_score_top * im_score_dn, dn_re)
+    # up_im = torch.div(- re_score_top * im_score_dn + im_score_top * re_score_dn, dn_re)
     up_im = torch.div(re_score_top * im_score_dn - im_score_top * re_score_dn, dn_re)
 
     if flag == "score":
+        # Re(<h_r, t>): denominator is the same, so don't have to calculate it
         return torch.sum(up_re * re_tail + up_im * im_tail, 1, keepdim=True)
     elif flag == "forward":
         to_score = embeddings[0].weight
         to_score = to_score[:, :rank], to_score[:, rank:2*rank]
-        return (
+        return (             
                 up_re @ to_score[0].transpose(0, 1) + up_im @ to_score[1].transpose(0, 1)
             ), (
+                # regularization
                 torch.sqrt(re_head ** 2 + im_head ** 2),
-                torch.sqrt((re_relation_a ** 2 + im_relation_a ** 2 + re_relation_b ** 2 + im_relation_b ** 2) * 2),
+                torch.sqrt((re_relation_a ** 2 + im_relation_a ** 2 + re_relation_c ** 2 + im_relation_c ** 2) * 2),
                 torch.sqrt(re_tail ** 2 + im_tail ** 2)
                 )
     elif flag == "get_queries":
