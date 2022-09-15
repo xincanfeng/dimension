@@ -72,9 +72,9 @@ python kbc/learn.py --dataset WN18RR --model FiveStarE_conjugate --regularizer N
 
 ```
 
-## Hyper-parameters
+## Hyperparameters
 
-Best hyper-parameter setting for $5^{\bigstar}\mathrm{E}$
+Best hyperparameter settings for $5^{\bigstar}\mathrm{E}$
 
 | dataset  | model     | regularizer | optimizer | max_epochs | valid | rank | batch_size | reg     | init   | learning_rate |
 | -------- | --------- | ----------- | --------- | ---------- | ----- | ---- | ---------- | ------- | ------ | ------------- |
@@ -84,7 +84,7 @@ Best hyper-parameter setting for $5^{\bigstar}\mathrm{E}$
 | FB15K    | FiveStarE | N3          | Adagrad   | 25         | 1     | 500  | 1000       | 1.0E-03 | 1.E-03 | 5.E-02        |
 | WN       | FiveStarE | N3          | Adagrad   | 400        | 3     | 500  | 500        | 5.E-02  | 1.E-03 | 1.E-01        |
 
-Best hyper-parameter setting for $5^{\bigstar}\mathrm{\epsilon}$
+Best hyperparameter settings for $5^{\bigstar}\mathrm{\epsilon}$
 
 | dataset  | model               | regularizer | optimizer | max_epochs | valid | rank | batch_size | reg     | init   | learning_rate |
 | -------- | ------------------- | ----------- | --------- | ---------- | ----- | ---- | ---------- | ------- | ------ | ------------- |
