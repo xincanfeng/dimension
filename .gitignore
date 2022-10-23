@@ -9,3 +9,4 @@ kbc/data
 output/
 illustration/
 history/
+.venv_kbc/
