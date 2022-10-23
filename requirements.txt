@@ -1,0 +1,8 @@
+tqdm
+torch
+numpy
+scikit-learn
+scipy
+
+# For cuda=11.6, manually run the following:
+# pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
