@@ -80,7 +80,7 @@ def transformation(embeddings, x, flag, rank):
     # the real and imaginary part of head
     re_head, im_head = lhs[:, :rank], lhs[:, rank:2*rank]
     # the real and imaginary part of relation
-    re_relation_a, im_relation_a, re_relation_b, im_relation_b, \
+    re_relation_a, im_relation_a, re_relation_b, im_relation_b = \
         rel[:, :rank], rel[:, rank:2*rank], rel[:, 2*rank:3*rank], rel[:, 3*rank:4*rank]
     # the real and imaginary part of tail
     re_tail, im_tail = rhs[:, :rank], rhs[:, rank:2*rank]
