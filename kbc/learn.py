@@ -26,6 +26,7 @@ from kbc.FiveStarE_negative_conjugate import FiveStarE_negative_conjugate
 from kbc.FiveStarE_horizontal_conjugate import FiveStarE_horizontal_conjugate
 from kbc.FiveStarE_vertical_conjugate import FiveStarE_vertical_conjugate
 from kbc.FiveStarE_half_reg import FiveStarE_half_reg
+from kbc.FiveStarE_twin import FiveStarE_twin
 from kbc.CP import CP
 from kbc.ComplEx import ComplEx
 from kbc.ComplEx_conjugate import ComplEx_conjugate
@@ -55,7 +56,7 @@ parser.add_argument(
 models = ['FiveStarE', 'CP', 'ComplEx',
           'FiveStarE_conjugate', 'ComplEx_conjugate', 
           'FiveStarE_horizontal_conjugate', 'FiveStarE_vertical_conjugate', 'FiveStarE_negative_conjugate', 'FiveStarE_half_reg',
-          'ComplEx_twin',
+          'ComplEx_twin', 'FiveStarE_twin',
           ]
 parser.add_argument(
     '--model', choices=models,
@@ -143,6 +144,7 @@ model = {
     'FiveStarE_vertical_conjugate': lambda: FiveStarE_vertical_conjugate(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_negative_conjugate': lambda: FiveStarE_negative_conjugate(dataset.get_shape(), args.rank, args.init),
     'FiveStarE_half_reg': lambda: FiveStarE_half_reg(dataset.get_shape(), args.rank, args.init),
+    'FiveStarE_twin': lambda: FiveStarE_twin(dataset.get_shape(), args.rank, args.init),
     'CP': lambda: CP(dataset.get_shape(), args.rank, args.init),
     'ComplEx': lambda: ComplEx(dataset.get_shape(), args.rank, args.init),
     'ComplEx_conjugate': lambda: ComplEx_conjugate(dataset.get_shape(), args.rank, args.init),
@@ -278,35 +280,35 @@ with codecs.open(f'{args.save_dir}/log.csv', 'w') as up:
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-# plot
-fig = plt.figure(tight_layout=True)
-gs = gridspec.GridSpec(2, 2)
+# # plot
+# fig = plt.figure(tight_layout=True)
+# gs = gridspec.GridSpec(2, 2)
 
-ax0 = fig.add_subplot(gs[0, :])
-ax0.plot(valid_epoch, [y['MRR'] for y in curve['train']], color = 'Navy', linewidth = '2')
-ax0.plot(valid_epoch, [y['MRR'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '2')
-ax0.plot(valid_epoch, [y['MRR'] for y in curve['test']], color = 'Gold', linewidth = '2')
-ax0.legend(['train', 'valid', 'test'])
-ax0.set_ylabel('MRR', fontsize=12)
-ax0.set_xlabel('epoch', fontsize=12)
+# ax0 = fig.add_subplot(gs[0, :])
+# ax0.plot(valid_epoch, [y['MRR'] for y in curve['train']], color = 'Navy', linewidth = '2')
+# ax0.plot(valid_epoch, [y['MRR'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '2')
+# ax0.plot(valid_epoch, [y['MRR'] for y in curve['test']], color = 'Gold', linewidth = '2')
+# ax0.legend(['train', 'valid', 'test'])
+# ax0.set_ylabel('MRR', fontsize=12)
+# ax0.set_xlabel('epoch', fontsize=12)
 
-ax1 = fig.add_subplot(gs[1, :1])
-ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
-ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
-ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
-ax1.legend(['train', 'valid', 'test'])
-ax1.set_ylabel('mrr_lhs', fontsize=12)
-ax1.set_xlabel('epoch', fontsize=12)
+# ax1 = fig.add_subplot(gs[1, :1])
+# ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
+# ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
+# ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
+# ax1.legend(['train', 'valid', 'test'])
+# ax1.set_ylabel('mrr_lhs', fontsize=12)
+# ax1.set_xlabel('epoch', fontsize=12)
 
-ax2 = fig.add_subplot(gs[1, 1:])
-ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
-ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
-ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
-ax2.legend(['train', 'valid', 'test'])
-ax2.set_ylabel('mrr_rhs', fontsize=12)
-ax2.set_xlabel('epoch', fontsize=12)
+# ax2 = fig.add_subplot(gs[1, 1:])
+# ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
+# ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
+# ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
+# ax2.legend(['train', 'valid', 'test'])
+# ax2.set_ylabel('mrr_rhs', fontsize=12)
+# ax2.set_xlabel('epoch', fontsize=12)
 
-plt.savefig(args.save_dir + '/MRR.png')
+# plt.savefig(args.save_dir + '/MRR.png')
 
-# save checkpoint
-# torch.save(model.state_dict(),f'{args.save_dir}/model_{e+1}.pt')
+# # save checkpoint
+# # torch.save(model.state_dict(),f'{args.save_dir}/model_{e+1}.pt')
