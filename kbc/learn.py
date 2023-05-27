@@ -280,35 +280,35 @@ with codecs.open(f'{args.save_dir}/log.csv', 'w') as up:
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-# # plot
-# fig = plt.figure(tight_layout=True)
-# gs = gridspec.GridSpec(2, 2)
+# plot
+fig = plt.figure(tight_layout=True)
+gs = gridspec.GridSpec(2, 2)
 
-# ax0 = fig.add_subplot(gs[0, :])
-# ax0.plot(valid_epoch, [y['MRR'] for y in curve['train']], color = 'Navy', linewidth = '2')
-# ax0.plot(valid_epoch, [y['MRR'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '2')
-# ax0.plot(valid_epoch, [y['MRR'] for y in curve['test']], color = 'Gold', linewidth = '2')
-# ax0.legend(['train', 'valid', 'test'])
-# ax0.set_ylabel('MRR', fontsize=12)
-# ax0.set_xlabel('epoch', fontsize=12)
+ax0 = fig.add_subplot(gs[0, :])
+ax0.plot(valid_epoch, [y['MRR'] for y in curve['train']], color = 'Navy', linewidth = '2')
+ax0.plot(valid_epoch, [y['MRR'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '2')
+ax0.plot(valid_epoch, [y['MRR'] for y in curve['test']], color = 'Gold', linewidth = '2')
+ax0.legend(['train', 'valid', 'test'])
+ax0.set_ylabel('MRR', fontsize=12)
+ax0.set_xlabel('epoch', fontsize=12)
 
-# ax1 = fig.add_subplot(gs[1, :1])
-# ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
-# ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
-# ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
-# ax1.legend(['train', 'valid', 'test'])
-# ax1.set_ylabel('mrr_lhs', fontsize=12)
-# ax1.set_xlabel('epoch', fontsize=12)
+ax1 = fig.add_subplot(gs[1, :1])
+ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
+ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
+ax1.plot(valid_epoch, [y['mrrs_lhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
+ax1.legend(['train', 'valid', 'test'])
+ax1.set_ylabel('mrr_lhs', fontsize=12)
+ax1.set_xlabel('epoch', fontsize=12)
 
-# ax2 = fig.add_subplot(gs[1, 1:])
-# ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
-# ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
-# ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
-# ax2.legend(['train', 'valid', 'test'])
-# ax2.set_ylabel('mrr_rhs', fontsize=12)
-# ax2.set_xlabel('epoch', fontsize=12)
+ax2 = fig.add_subplot(gs[1, 1:])
+ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['train']], color = 'Navy', linewidth = '1.1')
+ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['valid']], color = 'DarkTurquoise', linewidth = '1.1')
+ax2.plot(valid_epoch, [y['mrrs_rhs'] for y in curve['test']], color = 'Gold', linewidth = '1.1')
+ax2.legend(['train', 'valid', 'test'])
+ax2.set_ylabel('mrr_rhs', fontsize=12)
+ax2.set_xlabel('epoch', fontsize=12)
 
-# plt.savefig(args.save_dir + '/MRR.png')
+plt.savefig(args.save_dir + '/MRR.png')
 
-# # save checkpoint
-# # torch.save(model.state_dict(),f'{args.save_dir}/model_{e+1}.pt')
+# save checkpoint
+# torch.save(model.state_dict(),f'{args.save_dir}/model_{e+1}.pt')
